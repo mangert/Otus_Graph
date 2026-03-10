@@ -2,29 +2,36 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <optional>
 #include <string>
 #include "IGraph.h"
 
-template <typename Vertex, typename EdgeInfo = bool>
+template <typename Vertex, typename EdgeInfo = bool, bool Directed = false>
 class GraphEnumeration : public IGraph<Vertex, EdgeInfo> {
-private:
-    std::set<Vertex> vertices_;
-    // Для ребер нужно хранить: (from, to) -> info
-    std::map<std::pair<Vertex, Vertex>, EdgeInfo> edges_;
 
 public:
+    //---------- Констукторы ---------------//
+    GraphEnumeration() = default;
+    GraphEnumeration(const GraphEnumeration&) = default;
+    GraphEnumeration(GraphEnumeration&&) = default;
+
+    GraphEnumeration& operator=(const GraphEnumeration&) = default;
+    GraphEnumeration& operator=(GraphEnumeration&&) = default;
+    ~GraphEnumeration() = default;
+
+    //--------- Работа с вершинами --------------//
     bool addVertex(const Vertex& v) override {
-        return vertices_.insert(v).second;
+        return vertices.insert(v).second;
     }
 
     bool removeVertex(const Vertex& v) override {
-        if (!vertices_.erase(v)) return false;
+        if (!vertices.erase(v)) return false;
 
         // Удаляем все ребра, связанные с этой вершиной
-        auto it = edges_.begin();
-        while (it != edges_.end()) {
+        auto it = edges.begin();
+        while (it != edges.end()) {
             if (it->first.first == v || it->first.second == v) {
-                it = edges_.erase(it);
+                it = edges.erase(it);
             }
             else {
                 ++it;
@@ -34,74 +41,116 @@ public:
     }
 
     bool hasVertex(const Vertex& v) const override {
-        return vertices_.count(v) > 0;
+        return vertices.count(v) > 0;
     }
 
     std::vector<Vertex> getVertices() const override {
-        return { vertices_.begin(), vertices_.end() };
+        return { vertices.begin(), vertices.end() };
     }
 
     size_t vertexCount() const override {
-        return vertices_.size();
+        return vertices.size();
     }
 
+    //--------- Работа с ребрами --------------//
     bool addEdge(const Vertex& from, const Vertex& to, const EdgeInfo& info = EdgeInfo()) override {
         // Проверяем, что вершины существуют
         if (!hasVertex(from) || !hasVertex(to)) return false;
 
         auto edge = std::make_pair(from, to);
-        return edges_.emplace(edge, info).second;
+        return edges.emplace(edge, info).second;
     }
 
     bool removeEdge(const Vertex& from, const Vertex& to) override {
-        return edges_.erase({ from, to }) > 0;
+        return edges.erase({ from, to }) > 0;
     }
 
     bool hasEdge(const Vertex& from, const Vertex& to) const override {
-        return edges_.count({ from, to }) > 0;
+        return edges.count({ from, to }) > 0;
     }
 
-    EdgeInfo getEdgeInfo(const Vertex& from, const Vertex& to) const override {
-        auto it = edges_.find({ from, to });
-        if (it != edges_.end()) {
+    std::optional<EdgeInfo> getEdgeInfo(const Vertex& from, const Vertex& to) const override {
+        auto it = edges.find({ from, to });
+        if (it != edges.end()) {
+
             return it->second;
         }
-        return EdgeInfo(); // Возвращаем значение по умолчанию
+        return std::nullopt; // нет такого ребра
     }
 
     std::vector<std::tuple<Vertex, Vertex, EdgeInfo>> getEdges() const override {
         std::vector<std::tuple<Vertex, Vertex, EdgeInfo>> result;
-        for (const auto& [edge, info] : edges_) {
+        for (const auto& [edge, info] : edges) {
             result.emplace_back(edge.first, edge.second, info);
         }
         return result;
     }
 
     size_t edgeCount() const override {
-        return edges_.size();
+        return edges.size();
     }
+
+    //--------- Другие операции --------------//
 
     std::vector<Vertex> getNeighbors(const Vertex& v) const override {
         std::vector<Vertex> neighbors;
-        for (const auto& [edge, _] : edges_) {
+        for (const auto& [edge, _] : edges) {
             if (edge.first == v) {
-                neighbors.push_back(edge.second);
+                neighbors.emplace_back(edge.second);
             }
             // Для неориентированного графа добавляем и обратные ребра
-            if (edge.second == v) {
-                neighbors.push_back(edge.first);
+            if constexpr (!Directed) {
+                if (edge.second == v) {
+                    neighbors.emplace_back(edge.first);
+                }
             }
+            
         }
         return neighbors;
     }
+    
+    size_t outDegree(const Vertex& v) const
+        requires (Directed) {
 
-    int degree(const Vertex& v) const override {
-        int deg = 0;
-        for (const auto& [edge, _] : edges_) {
-            if (edge.first == v || edge.second == v) {
-                deg++;
+        return countOut(v);
+    }
+    
+    size_t inDegree(const Vertex& v) const
+        requires (Directed) {
+
+        return countIn(v);
+    }
+
+    //эти методы доступны только для ориентированных графов
+    size_t degree(const Vertex& v) const override {
+        
+        return countOut(v) + countIn(v);
+    }
+private:
+    
+    size_t countOut(const Vertex& v) const{
+        size_t deg = 0;
+        for (const auto& [edge, _] : edges) {
+            if (edge.first == v) {
+                ++deg;
+            }
+        }        
+        return deg;
+    }
+    
+    size_t countIn(const Vertex& v) const{        
+        size_t deg = 0;
+        for (const auto& [edge, _] : edges) {
+            if (edge.second == v) {
+                ++deg;
             }
         }
         return deg;
     }
+
+private:
+    
+    std::set<Vertex> vertices;        
+    std::map<std::pair<Vertex, Vertex>, EdgeInfo> edges;
+
 };
