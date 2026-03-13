@@ -7,6 +7,7 @@
 #include "GraphEdgeList.h"
 #include "GraphAdjVectors.h"
 #include "GraphAdjArray.h"
+#include "GraphAdjList.h"
 
 
 int main() {
@@ -64,7 +65,7 @@ int main() {
 			std::vector<std::tuple<int, int, bool>>{})),
 		graph::GraphAdjVectors<int, false >> );
 	std::cout << std::endl;
-	auto g3 = graph::make_graph<graph::GraphAdjArray, true>(vertices, edges);
+	auto g3 = graph::make_graph<graph::GraphAdjList, true>(vertices, edges);
 	std::cout << g3.outDegree(1); // 2 (→2, →3)
 	std::cout << g3.inDegree(1);  // 1 (2→1)
 	std::cout << g3.degree(1);     // 3 (2+1)*/

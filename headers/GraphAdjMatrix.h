@@ -250,8 +250,11 @@ namespace graph {
         }
 
     private:
+        //вспомогательные индексы для вершин
         std::map<Vertex, size_t> vertex_to_index;
         std::vector<Vertex> index_to_vertex;
+        
+        //собственно граф
         std::vector<std::vector<std::optional<EdgeInfo>>> matrix;
 
     };

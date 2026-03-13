@@ -236,10 +236,11 @@ namespace graph {
         }
 
     private:
+        //вспомогательные индексы для вершин
         std::map<Vertex, size_t> vertex_to_index;
         std::vector<Vertex> index_to_vertex;
 
-        // Матрица V × max_degree, хранит вершины или nullopt (пусто)
+        // Собственно граф
         std::vector<std::vector<Vertex>> vectors;
         
     };
