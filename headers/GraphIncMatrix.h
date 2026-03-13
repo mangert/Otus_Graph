@@ -6,7 +6,7 @@
 
 namespace graph {
     
-    template <typename Vertex, typename EdgeInfo, bool Directed = false>
+    template <Comparable Vertex, typename EdgeInfo, bool Directed = false>
     class GraphIncMatrix : public IGraph<Vertex, EdgeInfo> {
 
     public:

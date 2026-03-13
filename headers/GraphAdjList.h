@@ -6,7 +6,7 @@
 #include "IGraph.h"
 
 namespace graph {
-    template <typename Vertex, bool Directed = false>
+    template <Comparable Vertex, bool Directed = false>
     class GraphAdjList : public IGraph<Vertex, bool> { //информация о ребрах в этом представлении не сохраняется
 
     public:

@@ -5,7 +5,7 @@
 
 namespace graph {
     
-    template <typename Vertex, typename EdgeInfo, bool Directed = false>
+    template <Comparable Vertex, typename EdgeInfo, bool Directed = false>
     class GraphEdgeList : public IGraph<Vertex, EdgeInfo> {    
 
     public:

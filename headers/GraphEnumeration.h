@@ -8,7 +8,7 @@
 
 namespace graph {
     
-    template <typename Vertex, typename EdgeInfo = bool, bool Directed = false>
+    template <Comparable Vertex, typename EdgeInfo = bool, bool Directed = false>
     class GraphEnumeration : public IGraph<Vertex, EdgeInfo> {
 
     public:

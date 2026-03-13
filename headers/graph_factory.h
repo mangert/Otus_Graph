@@ -9,9 +9,9 @@
 namespace graph {
 
     // Основная версия - для полного набора шаблонных параметров
-    template <template <typename, typename, bool> class Graph,
+    template <template <Comparable, typename, bool> class Graph,
         bool Directed = false,
-        typename Vertex,
+        Comparable Vertex,
         typename EdgeInfo>
     Graph<Vertex, EdgeInfo, Directed> make_graph(
         const std::vector<Vertex>& vertices,
@@ -38,9 +38,9 @@ namespace graph {
     }
 
     //специализация для двух шаблонных параметров
-    template <template <typename, bool> class Graph,
+    template <template <Comparable, bool> class Graph,
         bool Directed = false,
-        typename Vertex>
+        Comparable Vertex>
     Graph<Vertex, Directed> make_graph(
         const std::vector<Vertex>& vertices,
         const std::vector<std::tuple<Vertex, Vertex, bool>>& edges) {
