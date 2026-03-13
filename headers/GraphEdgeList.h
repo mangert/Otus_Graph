@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <vector>
 #include <map>
 #include "IGraph.h"
@@ -9,7 +9,7 @@ namespace graph {
     class GraphEdgeList : public IGraph<Vertex, EdgeInfo> {    
 
     public:
-        //---------- Констукторы ---------------//
+        //---------- РљРѕРЅСЃС‚СѓРєС‚РѕСЂС‹ ---------------//
         GraphEdgeList() = default;
         GraphEdgeList(const GraphEdgeList&) = default;
         GraphEdgeList(GraphEdgeList&&) = default;
@@ -18,7 +18,7 @@ namespace graph {
         GraphEdgeList& operator= (GraphEdgeList&&) = default;
         ~GraphEdgeList() = default;
 
-        //--------- Работа с вершинами --------------//
+        //--------- Р Р°Р±РѕС‚Р° СЃ РІРµСЂС€РёРЅР°РјРё --------------//
         bool addVertex(const Vertex& v) override {
             return vertices.insert(v).second;
         }
@@ -26,7 +26,7 @@ namespace graph {
         bool removeVertex(const Vertex& v) override {
             if (!vertices.erase(v)) return false;
 
-            // Удаляем все ребра с этой вершиной
+            // РЈРґР°Р»СЏРµРј РІСЃРµ СЂРµР±СЂР° СЃ СЌС‚РѕР№ РІРµСЂС€РёРЅРѕР№
             auto it = edges.begin();
             while (it != edges.end()) {
                 if (it->from == v || it->to == v) {
@@ -52,16 +52,16 @@ namespace graph {
             return vertices.size();
         }
 
-        //--------- Работа с ребрами --------------//
+        //--------- Р Р°Р±РѕС‚Р° СЃ СЂРµР±СЂР°РјРё --------------//
         bool addEdge(const Vertex& from, const Vertex& to, const EdgeInfo& info = EdgeInfo()) override {
             if (!hasVertex(from) || !hasVertex(to)) return false;
 
-            // Проверка на существование ребра
+            // РџСЂРѕРІРµСЂРєР° РЅР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЂРµР±СЂР°
             if (hasEdge(from, to)) return false;
 
             edge_index[{from, to}] = edges.size();
             if constexpr (!Directed) {
-                // Для неориентированных храним оба направления в индексе
+                // Р”Р»СЏ РЅРµРѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРЅС‹С… С…СЂР°РЅРёРј РѕР±Р° РЅР°РїСЂР°РІР»РµРЅРёСЏ РІ РёРЅРґРµРєСЃРµ
                 edge_index[{to, from}] = edges.size();
             }
 
@@ -84,19 +84,19 @@ namespace graph {
             size_t idx = it->second;
             size_t last_idx = edges.size() - 1;
 
-            // Если удаляем не последнее ребро - переставляем
+            // Р•СЃР»Рё СѓРґР°Р»СЏРµРј РЅРµ РїРѕСЃР»РµРґРЅРµРµ СЂРµР±СЂРѕ - РїРµСЂРµСЃС‚Р°РІР»СЏРµРј
             if (idx != last_idx) {
                 const auto& last_edge = edges[last_idx];
                 edges[idx] = last_edge;
 
-                // Обновляем индексы для перемещенного ребра
+                // РћР±РЅРѕРІР»СЏРµРј РёРЅРґРµРєСЃС‹ РґР»СЏ РїРµСЂРµРјРµС‰РµРЅРЅРѕРіРѕ СЂРµР±СЂР°
                 edge_index[{last_edge.from, last_edge.to}] = idx;
                 if constexpr (!Directed) {
                     edge_index[{last_edge.to, last_edge.from}] = idx;
                 }
             }
 
-            // Удаляем старое ребро из индекса
+            // РЈРґР°Р»СЏРµРј СЃС‚Р°СЂРѕРµ СЂРµР±СЂРѕ РёР· РёРЅРґРµРєСЃР°
             edge_index.erase({ from, to });
             if constexpr (!Directed) {
                 edge_index.erase({ to, from });
@@ -144,7 +144,7 @@ namespace graph {
             return edges.size();
         }
 
-        //--------- Другие операции --------------//
+        //--------- Р”СЂСѓРіРёРµ РѕРїРµСЂР°С†РёРё --------------//
         std::vector<Vertex> getNeighbors(const Vertex& v) const override {
             if (!hasVertex(v)) return {};
 
@@ -169,7 +169,7 @@ namespace graph {
             for (const auto& e : edges) {
                 if constexpr (Directed) {
                     if (e.from == v) ++deg;
-                    if (e.to == v) ++deg; // для полной степени
+                    if (e.to == v) ++deg; // РґР»СЏ РїРѕР»РЅРѕР№ СЃС‚РµРїРµРЅРё
                 }
                 else {
                     if (e.from == v) ++deg;
@@ -179,7 +179,7 @@ namespace graph {
             return deg;
         }
 
-        // Для ориентированных графов
+        // Р”Р»СЏ РѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРЅС‹С… РіСЂР°С„РѕРІ
         size_t outDegree(const Vertex& v) const requires (Directed) {
             if (!hasVertex(v)) return 0;
 
@@ -198,8 +198,8 @@ namespace graph {
                 if (e.to == v) ++deg;
             }
             return deg;
-        }
-    
+        }    
+
     private:
         std::set<Vertex> vertices;
 
@@ -210,7 +210,7 @@ namespace graph {
         };
         std::vector<Edge> edges;
 
-        // Для быстрого поиска
+        // Р”Р»СЏ Р±С‹СЃС‚СЂРѕРіРѕ РїРѕРёСЃРєР°
         std::map<std::pair<Vertex, Vertex>, size_t> edge_index;
     };
 

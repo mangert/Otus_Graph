@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <vector>
 #include <map>
 #include <set>
@@ -10,7 +10,7 @@ namespace graph {
     class GraphIncMatrix : public IGraph<Vertex, EdgeInfo> {
 
     public:
-        //---------- Констукторы ---------------//
+        //---------- РљРѕРЅСЃС‚СѓРєС‚РѕСЂС‹ ---------------//
         GraphIncMatrix() = default;
         GraphIncMatrix(const GraphIncMatrix&) = default;
         GraphIncMatrix(GraphIncMatrix&&) = default;
@@ -19,7 +19,7 @@ namespace graph {
         GraphIncMatrix& operator= (GraphIncMatrix&&) = default;
         ~GraphIncMatrix() = default;
 
-        //--------- Работа с вершинами --------------//
+        //--------- Р Р°Р±РѕС‚Р° СЃ РІРµСЂС€РёРЅР°РјРё --------------//
         bool addVertex(const Vertex& v) override {
             if (vertex_to_index.count(v)) return false;
 
@@ -27,7 +27,7 @@ namespace graph {
             vertex_to_index[v] = new_idx;
             index_to_vertex.emplace_back(v);
 
-            // Добавляем столбец для новой вершины во все существующие ребра
+            // Р”РѕР±Р°РІР»СЏРµРј СЃС‚РѕР»Р±РµС† РґР»СЏ РЅРѕРІРѕР№ РІРµСЂС€РёРЅС‹ РІРѕ РІСЃРµ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёРµ СЂРµР±СЂР°
             for (auto& row : matrix) {
                 row.push_back(0);
             }
@@ -41,7 +41,7 @@ namespace graph {
 
             size_t v_idx = it->second;
 
-            // Собираем все ребра, связанные с v
+            // РЎРѕР±РёСЂР°РµРј РІСЃРµ СЂРµР±СЂР°, СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ v
             std::vector<std::pair<Vertex, Vertex>> edges_to_remove;
 
             for (size_t e_idx = 0; e_idx < matrix.size(); ++e_idx) {
@@ -51,25 +51,25 @@ namespace graph {
                 }
             }
 
-            // Удаляем собранные ребра
+            // РЈРґР°Р»СЏРµРј СЃРѕР±СЂР°РЅРЅС‹Рµ СЂРµР±СЂР°
             for (const auto& [from, to] : edges_to_remove) {
-                removeEdge(from, to);  // Этот метод сам учтет направленность
+                removeEdge(from, to);  // Р­С‚РѕС‚ РјРµС‚РѕРґ СЃР°Рј СѓС‡С‚РµС‚ РЅР°РїСЂР°РІР»РµРЅРЅРѕСЃС‚СЊ
             }
 
-            // Теперь удаляем вершину (столбец)
+            // РўРµРїРµСЂСЊ СѓРґР°Р»СЏРµРј РІРµСЂС€РёРЅСѓ (СЃС‚РѕР»Р±РµС†)
             size_t last_v_idx = index_to_vertex.size() - 1;
             if (v_idx != last_v_idx) {
                 Vertex last_vertex = index_to_vertex[last_v_idx];
                 vertex_to_index[last_vertex] = v_idx;
                 index_to_vertex[v_idx] = last_vertex;
 
-                // Переставляем столбцы
+                // РџРµСЂРµСЃС‚Р°РІР»СЏРµРј СЃС‚РѕР»Р±С†С‹
                 for (auto& row : matrix) {
                     row[v_idx] = row[last_v_idx];
                 }
             }
 
-            // Удаляем последний столбец
+            // РЈРґР°Р»СЏРµРј РїРѕСЃР»РµРґРЅРёР№ СЃС‚РѕР»Р±РµС†
             for (auto& row : matrix) {
                 row.pop_back();
             }
@@ -92,39 +92,39 @@ namespace graph {
             return vertex_to_index.size();
         }
 
-        //--------- Работа с ребрами --------------//
+        //--------- Р Р°Р±РѕС‚Р° СЃ СЂРµР±СЂР°РјРё --------------//
         bool addEdge(const Vertex& from, const Vertex& to, const EdgeInfo& info = EdgeInfo()) override {
-            // Проверяем существование вершин
+            // РџСЂРѕРІРµСЂСЏРµРј СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ РІРµСЂС€РёРЅ
             auto it_from = vertex_to_index.find(from);
             auto it_to = vertex_to_index.find(to);
             if (it_from == vertex_to_index.end() || it_to == vertex_to_index.end()) {
                 return false;
             }
 
-            // Проверяем, нет ли уже такого ребра
+            // РџСЂРѕРІРµСЂСЏРµРј, РЅРµС‚ Р»Рё СѓР¶Рµ С‚Р°РєРѕРіРѕ СЂРµР±СЂР°
             auto edge_key = std::make_pair(from, to);
             if (edge_to_index.count(edge_key)) return false;
 
-            // Добавляем новое ребро
+            // Р”РѕР±Р°РІР»СЏРµРј РЅРѕРІРѕРµ СЂРµР±СЂРѕ
             size_t edge_idx = index_to_edge.size();
             edge_to_index[edge_key] = edge_idx;
             index_to_edge.push_back({ from, to, info });
 
-            // Добавляем новую строку в матрицу
+            // Р”РѕР±Р°РІР»СЏРµРј РЅРѕРІСѓСЋ СЃС‚СЂРѕРєСѓ РІ РјР°С‚СЂРёС†Сѓ
             std::vector<int> new_row(vertexCount(), 0);
 
-            // Заполняем в зависимости от типа графа
+            // Р—Р°РїРѕР»РЅСЏРµРј РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РёРїР° РіСЂР°С„Р°
             if constexpr (Directed) {
-                if (from == to) { // петля
+                if (from == to) { // РїРµС‚Р»СЏ
                     new_row[it_from->second] = 2;
                 }
                 else {
-                    new_row[it_from->second] = -1; // начало
-                    new_row[it_to->second] = 1;    // конец
+                    new_row[it_from->second] = -1; // РЅР°С‡Р°Р»Рѕ
+                    new_row[it_to->second] = 1;    // РєРѕРЅРµС†
                 }
             }
             else {
-                // Неориентированный
+                // РќРµРѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРЅС‹Р№
                 ++new_row[it_from->second] = 1;
                 ++new_row[it_to->second] = 1;
             }
@@ -138,7 +138,7 @@ namespace graph {
                 return removeEdgeInternal(from, to);
             }
             else {
-                // Для неориентированного пробуем оба порядка
+                // Р”Р»СЏ РЅРµРѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ РїСЂРѕР±СѓРµРј РѕР±Р° РїРѕСЂСЏРґРєР°
                 if (removeEdgeInternal(from, to)) return true;
                 if (removeEdgeInternal(to, from)) return true;
                 return false;
@@ -168,38 +168,38 @@ namespace graph {
             return matrix.size();
         }
 
-        //--------- Другие операции --------------//    
+        //--------- Р”СЂСѓРіРёРµ РѕРїРµСЂР°С†РёРё --------------//    
         std::vector<Vertex> getNeighbors(const Vertex& v) const override {
             auto it = vertex_to_index.find(v);
             if (it == vertex_to_index.end()) return {};
 
             size_t v_idx = it->second;
-            std::set<Vertex> neighbors; // используем set для уникальности
+            std::set<Vertex> neighbors; // РёСЃРїРѕР»СЊР·СѓРµРј set РґР»СЏ СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚Рё
 
             for (size_t e_idx = 0; e_idx < matrix.size(); ++e_idx) {
                 int val = matrix[e_idx][v_idx];
 
                 if constexpr (Directed) {
-                    if (val == -1) { // v - начало ребра -> ищем конец
+                    if (val == -1) { // v - РЅР°С‡Р°Р»Рѕ СЂРµР±СЂР° -> РёС‰РµРј РєРѕРЅРµС†
                         for (size_t other = 0; other < vertexCount(); ++other) {
                             if (matrix[e_idx][other] == 1) {
                                 neighbors.insert(index_to_vertex[other]);
                             }
                         }
                     }
-                    else if (val == 1) { // v - конец ребра -> ищем начало
+                    else if (val == 1) { // v - РєРѕРЅРµС† СЂРµР±СЂР° -> РёС‰РµРј РЅР°С‡Р°Р»Рѕ
                         for (size_t other = 0; other < vertexCount(); ++other) {
                             if (matrix[e_idx][other] == -1) {
                                 neighbors.insert(index_to_vertex[other]);
                             }
                         }
                     }
-                    else if (val == 2) { // петля
-                        neighbors.insert(v); // добавляем саму себя
+                    else if (val == 2) { // РїРµС‚Р»СЏ
+                        neighbors.insert(v); // РґРѕР±Р°РІР»СЏРµРј СЃР°РјСѓ СЃРµР±СЏ
                     }
                 }
                 else {
-                    // Неориентированный - любое положительное значение значит инцидентность
+                    // РќРµРѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРЅС‹Р№ - Р»СЋР±РѕРµ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р·РЅР°С‡РёС‚ РёРЅС†РёРґРµРЅС‚РЅРѕСЃС‚СЊ
                     if (val > 0) {
                         for (size_t other = 0; other < vertexCount(); ++other) {
                             if (other != v_idx && matrix[e_idx][other] > 0) {
@@ -224,20 +224,20 @@ namespace graph {
                 int val = matrix[e_idx][v_idx];
 
                 if constexpr (Directed) {
-                    if (val != 0) ++deg; // любое ненулевое значение
-                    // Для петель считаем 2
-                    if (val == 2) ++deg; // еще раз, если петля считается дважды
+                    if (val != 0) ++deg; // Р»СЋР±РѕРµ РЅРµРЅСѓР»РµРІРѕРµ Р·РЅР°С‡РµРЅРёРµ
+                    // Р”Р»СЏ РїРµС‚РµР»СЊ СЃС‡РёС‚Р°РµРј 2
+                    if (val == 2) ++deg; // РµС‰Рµ СЂР°Р·, РµСЃР»Рё РїРµС‚Р»СЏ СЃС‡РёС‚Р°РµС‚СЃСЏ РґРІР°Р¶РґС‹
                 }
                 else {
                     if (val == 1) ++deg;
-                    else if (val == 2) deg += 2; // петля дает степень 2
+                    else if (val == 2) deg += 2; // РїРµС‚Р»СЏ РґР°РµС‚ СЃС‚РµРїРµРЅСЊ 2
                 }
             }
 
             return deg;
         }
 
-        // Для ориентированных графов
+        // Р”Р»СЏ РѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРЅС‹С… РіСЂР°С„РѕРІ
         size_t outDegree(const Vertex& v) const requires (Directed) {
             auto it = vertex_to_index.find(v);
             if (it == vertex_to_index.end()) return 0;
@@ -246,8 +246,8 @@ namespace graph {
             size_t deg = 0;
 
             for (size_t e_idx = 0; e_idx < matrix.size(); ++e_idx) {
-                if (matrix[e_idx][v_idx] == -1) ++deg; // начало ребра
-                else if (matrix[e_idx][v_idx] == 2) ++deg; // петля (и out, и in)
+                if (matrix[e_idx][v_idx] == -1) ++deg; // РЅР°С‡Р°Р»Рѕ СЂРµР±СЂР°
+                else if (matrix[e_idx][v_idx] == 2) ++deg; // РїРµС‚Р»СЏ (Рё out, Рё in)
             }
 
             return deg;
@@ -261,15 +261,15 @@ namespace graph {
             size_t deg = 0;
 
             for (size_t e_idx = 0; e_idx < matrix.size(); ++e_idx) {
-                if (matrix[e_idx][v_idx] == 1) ++deg; // конец ребра
-                else if (matrix[e_idx][v_idx] == 2) ++deg; // петля
+                if (matrix[e_idx][v_idx] == 1) ++deg; // РєРѕРЅРµС† СЂРµР±СЂР°
+                else if (matrix[e_idx][v_idx] == 2) ++deg; // РїРµС‚Р»СЏ
             }
 
             return deg;
         }
 
     private:
-        // Вспомогательный метод, который удаляет ребро по точному совпадению (from, to)
+        // Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ СѓРґР°Р»СЏРµС‚ СЂРµР±СЂРѕ РїРѕ С‚РѕС‡РЅРѕРјСѓ СЃРѕРІРїР°РґРµРЅРёСЋ (from, to)
         bool removeEdgeInternal(const Vertex& from, const Vertex& to) {
             auto it = edge_to_index.find({ from, to });
             if (it == edge_to_index.end()) return false;
@@ -277,7 +277,7 @@ namespace graph {
             size_t e_idx = it->second;
             size_t last_idx = index_to_edge.size() - 1;
 
-            // Если удаляем не последнее ребро - переставляем
+            // Р•СЃР»Рё СѓРґР°Р»СЏРµРј РЅРµ РїРѕСЃР»РµРґРЅРµРµ СЂРµР±СЂРѕ - РїРµСЂРµСЃС‚Р°РІР»СЏРµРј
             if (e_idx != last_idx) {
                 const auto& last_edge = index_to_edge[last_idx];
                 edge_to_index[{last_edge.from, last_edge.to}] = e_idx;
@@ -285,7 +285,7 @@ namespace graph {
                 matrix[e_idx] = std::move(matrix[last_idx]);
             }
 
-            // Удаляем последнее ребро
+            // РЈРґР°Р»СЏРµРј РїРѕСЃР»РµРґРЅРµРµ СЂРµР±СЂРѕ
             edge_to_index.erase({ from, to });
             matrix.pop_back();
             index_to_edge.pop_back();
@@ -297,7 +297,7 @@ namespace graph {
         std::map<Vertex, size_t> vertex_to_index;
         std::vector<Vertex> index_to_vertex;
 
-        //Отображение для ребер
+        //РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РґР»СЏ СЂРµР±РµСЂ
         struct EdgeDescriptor {
             Vertex from;
             Vertex to;
@@ -306,9 +306,9 @@ namespace graph {
         std::map<std::pair<Vertex, Vertex>, size_t> edge_to_index;
         std::vector<EdgeDescriptor> index_to_edge;
 
-        // Матрица инцидентности: строки = ребра, столбцы = вершины
-        // Значения: для неориентированного - 0/1/2 (петля)
-        //           для ориентированного - -1/0/1/2 (петля)
-        std::vector<std::vector<int>> matrix;  // int, потому что нужны -1, 0, 1, 2
+        // РњР°С‚СЂРёС†Р° РёРЅС†РёРґРµРЅС‚РЅРѕСЃС‚Рё: СЃС‚СЂРѕРєРё = СЂРµР±СЂР°, СЃС‚РѕР»Р±С†С‹ = РІРµСЂС€РёРЅС‹
+        // Р—РЅР°С‡РµРЅРёСЏ: РґР»СЏ РЅРµРѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ - 0/1/2 (РїРµС‚Р»СЏ)
+        //           РґР»СЏ РѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРЅРѕРіРѕ - -1/0/1/2 (РїРµС‚Р»СЏ)
+        std::vector<std::vector<int>> matrix;  // int, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РЅСѓР¶РЅС‹ -1, 0, 1, 2
     };
 } //namespace graph

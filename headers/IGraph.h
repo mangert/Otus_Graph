@@ -1,24 +1,30 @@
-#pragma once
+п»ї#pragma once
 #include <vector>
 #include <optional>
 
 namespace graph {
+
+    template <typename T>
+    concept Comparable = requires(T a, T b) {
+        { a == b } -> std::convertible_to<bool>;
+        { a < b } -> std::convertible_to<bool>;  // РґР»СЏ map РЅСѓР¶РµРЅ operator<
+    };
     
-    // Базовый интерфейс 
-    template <typename Vertex, typename EdgeInfo, bool Directed = false>
+    // Р‘Р°Р·РѕРІС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ 
+    template <Comparable Vertex, typename EdgeInfo, bool Directed = false>
     class IGraph {
     public:
 
         virtual ~IGraph() = default;
 
-        // Работа с вершинами
+        // Р Р°Р±РѕС‚Р° СЃ РІРµСЂС€РёРЅР°РјРё
         virtual bool addVertex(const Vertex& v) = 0;
         virtual bool removeVertex(const Vertex& v) = 0;
         virtual bool hasVertex(const Vertex& v) const = 0;
         virtual std::vector<Vertex> getVertices() const = 0;
         virtual size_t vertexCount() const = 0;
 
-        // Работа с ребрами
+        // Р Р°Р±РѕС‚Р° СЃ СЂРµР±СЂР°РјРё
         virtual bool addEdge(const Vertex& from, const Vertex& to, const EdgeInfo& info = EdgeInfo()) = 0;
         virtual bool removeEdge(const Vertex& from, const Vertex& to) = 0;
         virtual bool hasEdge(const Vertex& from, const Vertex& to) const = 0;
@@ -26,7 +32,7 @@ namespace graph {
         virtual std::vector<std::tuple<Vertex, Vertex, EdgeInfo>> getEdges() const = 0;
         virtual size_t edgeCount() const = 0;
 
-        // Другие методы
+        // Р”СЂСѓРіРёРµ РјРµС‚РѕРґС‹
         virtual std::vector<Vertex> getNeighbors(const Vertex& v) const = 0;
         virtual size_t degree(const Vertex& v) const = 0;
     };
