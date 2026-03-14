@@ -8,27 +8,84 @@
 namespace graph {
     template <Comparable Vertex, bool Directed = false>
     class GraphStructured : public IGraph<Vertex, bool> {
-    private:
-        // Единый линейный список всех ребер
-        std::list<Vertex> edges_;
-
-        // Оглавление: для каждой вершины храним итератор на начало её списка и размер
-        // Если список пуст, итератор = edges_.end(), размер = 0
-        std::map<Vertex, std::pair<typename std::list<Vertex>::iterator, size_t>> headers_;
-
+    
     public:
+        //---------- Констукторы ---------------//
+        GraphStructured() = default;
+        GraphStructured(const GraphStructured&) = default;
+        GraphStructured(GraphStructured&&) = default;
+
+        GraphStructured& operator=(const GraphStructured&) = default;
+        GraphStructured& operator=(GraphStructured&&) = default;
+        ~GraphStructured() = default;
+
+        //--------- Работа с вершинами --------------//
         bool addVertex(const Vertex& v) override {
-            if (headers_.count(v)) return false;  // вершина уже есть
+            if (headers.count(v)) return false;  // вершина уже есть
 
             // Новая вершина с пустым списком
-            headers_[v] = { edges_.end(), 0 };
+            headers[v] = { edges.end(), 0 };
             return true;
         }
 
+        bool removeVertex(const Vertex& v) override {
+            auto it_v = headers.find(v);
+            if (it_v == headers.end()) return false;
+
+            const auto& [iter, size] = it_v->second;
+
+            // Удаляем все ребра, связанные с v
+            if (size > 0) {
+                // Собираем все вершины, смежные с v
+                std::vector<Vertex> neighbors;
+                auto it = iter;
+                for (size_t i = 0; i != size; ++i) {
+                    if (it == edges.end()) break;
+                    neighbors.push_back(*it);
+                    ++it;
+                }
+
+                // Удаляем ребра в обратную сторону
+                for (const auto& to : neighbors) {
+                    removeEdge(to, v);  // удаляем обратные ребра
+                }
+
+                // Удаляем ребра из v
+                it = iter;
+                for (size_t i = 0; i < size; ++i) {
+                    auto next = std::next(it);
+                    edges.erase(it);
+                    it = next;
+                }
+            }
+
+            // Удаляем вершину из оглавления
+            headers.erase(v);
+
+            return true;
+        }
+
+        bool hasVertex(const Vertex& v) const {            
+            return headers.count(v) > 0;
+        }
+        
+        std::vector<Vertex> getVertices() const override {
+            std::vector<Vertex> result;
+            for (const auto& [v, _] : headers) {
+                result.push_back(v);
+            }
+            return result;
+        }
+
+        size_t vertexCount() const override {
+            return headers.size();
+        }
+
+        //--------- Работа с ребрами --------------//
         bool addEdge(const Vertex& from, const Vertex& to, const bool& info = true) override {
-            auto it_from = headers_.find(from);
-            auto it_to = headers_.find(to);
-            if (it_from == headers_.end() || it_to == headers_.end()) {
+            auto it_from = headers.find(from);
+            auto it_to = headers.find(to);
+            if (it_from == headers.end() || it_to == headers.end()) {
                 return false;  // одна из вершин не существует
             }
 
@@ -38,14 +95,13 @@ namespace graph {
 
             // Находим позицию для вставки (сохраняем сортировку списков)
             auto pos = from_iter;
-            for (size_t i = 0; i < from_size; ++i) {
-                if (pos == edges_.end() || *pos > to) break;
-                if (*pos == to) return false;  // дополнительная проверка
+            for (size_t i = 0; i != from_size; ++i) {
+                if (pos == edges.end() || *pos > to) break;                
                 ++pos;
             }
 
             // Вставляем ребро
-            auto inserted = edges_.insert(pos, to);
+            auto inserted = edges.insert(pos, to);
 
             // Если это было первое ребро, обновляем итератор начала
             if (from_size == 0) {
@@ -61,17 +117,11 @@ namespace graph {
                 // Аналогично для обратного направления
                 pos = to_iter;
                 for (size_t i = 0; i < to_size; ++i) {
-                    if (pos == edges_.end() || *pos > from) break;
-                    if (*pos == from) {
-                        // Такого не должно быть из-за проверки hasEdge, но на всякий случай
-                        --from_size;  // откатываем
-                        edges_.erase(inserted);
-                        return false;
-                    }
+                    if (pos == edges.end() || *pos > from) break;                    
                     ++pos;
                 }
-
-                inserted = edges_.insert(pos, from);
+                
+                inserted = edges.insert(pos, from);
 
                 if (to_size == 0) {
                     to_iter = inserted;
@@ -83,60 +133,44 @@ namespace graph {
             return true;
         }
 
-        bool hasEdge(const Vertex& from, const Vertex& to) const override {
-            auto it_from = headers_.find(from);
-            if (it_from == headers_.end()) return false;
-
-            const auto& [iter, size] = it_from->second;
-
-            auto it = iter;
-            for (size_t i = 0; i < size; ++i) {
-                if (it == edges_.end()) break;
-                if (*it == to) return true;
-                if (*it > to) break;  // список отсортирован
-                ++it;
-            }
-
-            return false;
-        }
-
         bool removeEdge(const Vertex& from, const Vertex& to) override {
-            auto it_from = headers_.find(from);
-            if (it_from == headers_.end()) return false;
+            auto it_from = headers.find(from);
+            if (it_from == headers.end()) return false;
 
             auto& [from_iter, from_size] = it_from->second;
 
             // Ищем ребро в списке from
             auto it = from_iter;
             auto prev = it;
-            for (size_t i = 0; i < from_size; ++i) {
-                if (it == edges_.end()) break;
+            for (size_t i = 0; i != from_size; ++i) {
+                if (it == edges.end()) break;
                 if (*it == to) {
                     // Удаляем
+                    --from_size;
                     if (it == from_iter) {
                         // Удаляем первый элемент - нужно обновить итератор начала
                         auto next = std::next(it);
-                        from_iter = next;
+                        from_iter = (!from_size) ? edges.end() : next;                        
                     }
-                    edges_.erase(it);
-                    --from_size;
+                    edges.erase(it);                    
 
                     if constexpr (!Directed) {
                         // Удаляем обратное направление
-                        auto it_to = headers_.find(to);
-                        if (it_to != headers_.end()) {
+                        auto it_to = headers.find(to);
+                        if (it_to != headers.end()) {
                             auto& [to_iter, to_size] = it_to->second;
 
                             auto it2 = to_iter;
-                            for (size_t j = 0; j < to_size; ++j) {
-                                if (it2 == edges_.end()) break;
+                            for (size_t j = 0; j != to_size; ++j) {
+                                if (it2 == edges.end()) break;                                
                                 if (*it2 == from) {
+                                    --to_size;
                                     if (it2 == to_iter) {
                                         auto next = std::next(it2);
-                                        to_iter = next;
+                                        to_iter = (!to_size) ? edges.end() : next;                                        
                                     }
-                                    edges_.erase(it2);
-                                    --to_size;
+                                    edges.erase(it2);
+                                    
                                     break;
                                 }
                                 ++it2;
@@ -154,70 +188,45 @@ namespace graph {
             return false;
         }
 
-        bool removeVertex(const Vertex& v) override {
-            auto it_v = headers_.find(v);
-            if (it_v == headers_.end()) return false;
+        bool hasEdge(const Vertex& from, const Vertex& to) const override {
+            auto it_from = headers.find(from);
+            if (it_from == headers.end()) return false;
 
-            const auto& [iter, size] = it_v->second;
+            const auto& [iter, size] = it_from->second;
 
-            // Удаляем все ребра, связанные с v
-            if (size > 0) {
-                // Собираем все вершины, смежные с v
-                std::vector<Vertex> neighbors;
-                auto it = iter;
-                for (size_t i = 0; i < size; ++i) {
-                    if (it == edges_.end()) break;
-                    neighbors.push_back(*it);
-                    ++it;
-                }
-
-                // Удаляем ребра в обратную сторону
-                for (const auto& to : neighbors) {
-                    removeEdge(to, v);  // удаляем обратные ребра
-                }
-
-                // Удаляем ребра из v
-                it = iter;
-                for (size_t i = 0; i < size; ++i) {
-                    auto next = std::next(it);
-                    edges_.erase(it);
-                    it = next;
-                }
+            auto it = iter;
+            for (size_t i = 0; i < size; ++i) {
+                if (it == edges.end()) break;
+                if (*it == to) return true;
+                if (*it > to) break;  // список отсортирован
+                ++it;
             }
 
-            // Удаляем вершину из оглавления
-            headers_.erase(v);
-
-            return true;
+            return false;
         }
 
-        std::vector<Vertex> getVertices() const override {
-            std::vector<Vertex> result;
-            for (const auto& [v, _] : headers_) {
-                result.push_back(v);
+        std::optional<bool> getEdgeInfo(const Vertex& from, const Vertex& to) const override {
+            if (hasEdge(from, to)) {
+                return true;
             }
-            return result;
-        }
-
-        size_t vertexCount() const override {
-            return headers_.size();
+            return std::nullopt;
         }
 
         std::vector<std::tuple<Vertex, Vertex, bool>> getEdges() const override {
             std::vector<std::tuple<Vertex, Vertex, bool>> result;
 
-            for (const auto& [v, data] : headers_) {
+            for (const auto& [v, data] : headers) {
                 const auto& [iter, size] = data;
                 auto it = iter;
                 for (size_t i = 0; i < size; ++i) {
-                    if (it == edges_.end()) break;
+                    if (it == edges.end()) break;
 
                     // Для неориентированных графов добавляем только if v < *it
                     if constexpr (Directed) {
                         result.emplace_back(v, *it, true);
                     }
                     else {
-                        if (v < *it) {  // нужно operator< для Vertex
+                        if (v < *it) {
                             result.emplace_back(v, *it, true);
                         }
                     }
@@ -230,23 +239,23 @@ namespace graph {
 
         size_t edgeCount() const override {
             if constexpr (Directed) {
-                return edges_.size();
+                return edges.size();
             }
             else {
-                return edges_.size() / 2;
+                return edges.size() / 2;
             }
         }
 
         std::vector<Vertex> getNeighbors(const Vertex& v) const override {
-            auto it_v = headers_.find(v);
-            if (it_v == headers_.end()) return {};
+            auto it_v = headers.find(v);
+            if (it_v == headers.end()) return {};
 
             const auto& [iter, size] = it_v->second;
 
             std::vector<Vertex> neighbors;
             auto it = iter;
             for (size_t i = 0; i < size; ++i) {
-                if (it == edges_.end()) break;
+                if (it == edges.end()) break;
                 neighbors.push_back(*it);
                 ++it;
             }
@@ -255,8 +264,8 @@ namespace graph {
         }
 
         size_t degree(const Vertex& v) const override {
-            auto it_v = headers_.find(v);
-            if (it_v == headers_.end()) return 0;
+            auto it_v = headers.find(v);
+            if (it_v == headers.end()) return 0;
 
             const auto& [_, size] = it_v->second;
 
@@ -266,12 +275,12 @@ namespace graph {
             else {
                 // Для ориентированных нужно учесть входящие
                 size_t in_deg = 0;
-                for (const auto& [u, data] : headers_) {
+                for (const auto& [u, data] : headers) {
                     if (u == v) continue;
                     const auto& [iter, sz] = data;
                     auto it = iter;
                     for (size_t i = 0; i < sz; ++i) {
-                        if (it == edges_.end()) break;
+                        if (it == edges.end()) break;
                         if (*it == v) ++in_deg;
                         ++it;
                     }
@@ -281,35 +290,32 @@ namespace graph {
         }
 
         size_t outDegree(const Vertex& v) const requires (Directed) {
-            auto it_v = headers_.find(v);
-            if (it_v == headers_.end()) return 0;
+            auto it_v = headers.find(v);
+            if (it_v == headers.end()) return 0;
             return it_v->second.second;
         }
 
         size_t inDegree(const Vertex& v) const requires (Directed) {
             size_t deg = 0;
-            for (const auto& [u, data] : headers_) {
+            for (const auto& [u, data] : headers) {
                 if (u == v) continue;
                 const auto& [iter, sz] = data;
                 auto it = iter;
                 for (size_t i = 0; i < sz; ++i) {
-                    if (it == edges_.end()) break;
+                    if (it == edges.end()) break;
                     if (*it == v) ++deg;
                     ++it;
                 }
             }
             return deg;
-        }
+        }       
 
-        bool hasVertex(const Vertex& v) const override {
-            return headers_.count(v) > 0;
-        }
+    private:
+        // Единый линейный список всех ребер
+        std::list<Vertex> edges;
 
-        std::optional<bool> getEdgeInfo(const Vertex& from, const Vertex& to) const override {
-            if (hasEdge(from, to)) {
-                return true;
-            }
-            return std::nullopt;
-        }
+        // Оглавление: для каждой вершины храним итератор на начало её списка и размер
+        // Если список пуст, итератор = edges_.end(), размер = 0
+        std::map<Vertex, std::pair<typename std::list<Vertex>::iterator, size_t>> headers;
     };
 }//namespace graph
