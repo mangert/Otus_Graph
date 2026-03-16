@@ -10,11 +10,23 @@
 #include "GraphAdjList.h"
 #include "GraphStructured.h"
 #include "GraphVertexEdgeList.h"
+#include "test.cpp"
+
 
 
 int main() {
 	using namespace graph;
-	std::cout << "hello" << std::endl;
+	
+	std::cout << "=== TESTING UNDIRECTED GRAPHS ===\n";
+	run_all_tests<true>();
+
+	std::cout << "\n\n=== TESTING DIRECTED GRAPHS ===\n";
+	run_all_tests<false>();
+
+	//и так 9 раз
+	//а потом еще 9 раз - для ориентированных
+	
+	/*std::cout << "hello" << std::endl;
 	GraphIncMatrix<int, int> G;
 	G.addVertex(1);
 	G.addVertex(2);
@@ -37,7 +49,7 @@ int main() {
 	directed.addEdge(1, 2);
 	directed.addEdge(2, 1);
 	directed.addEdge(1, 3);*/
-
+	/*
 	std::vector<int> vertices { 1, 2, 3 };
 	std::tuple<int, int, bool> b { 1, 2, true };
 	std::vector<std::tuple<int, int, bool>> edges {b};
@@ -53,7 +65,7 @@ int main() {
 	std::cout << g0.degree(1);     // 3 (2+1)*/
 
 	// Неориентированный граф (по умолчанию)
-	auto g1 = graph::make_graph<GraphAdjVectors>(vertices, edges);
+	/*auto g1 = graph::make_graph<GraphAdjVectors>(vertices, edges);
 
 	// Ориентированный граф
 	auto g2 = graph::make_graph<graph::GraphAdjVectors, true>(vertices, edges);
@@ -62,7 +74,7 @@ int main() {
 	std::cout << g2.degree(1);     // 3 (2+1)*/
 
 	// Проверка, что это действительно работает для GraphAdjVectors
-	static_assert(std::is_same_v<
+	/*static_assert(std::is_same_v<
 		decltype(make_graph<graph::GraphAdjVectors>(std::vector<int>{},
 			std::vector<std::tuple<int, int, bool>>{})),
 		graph::GraphAdjVectors<int, false >> );

@@ -50,11 +50,12 @@ namespace graph {
                 index_to_vertex[idx] = last_vertex;
                 vertex_to_index[last_vertex] = idx;
 
-                // Переставляем строки и столбцы в матрице
-                matrix[idx] = std::move(matrix[last_idx]);
+                // Переставляем строки и столбцы в матрице                
                 for (auto& row : matrix) {
                     row[idx] = row[last_idx];
                 }
+                
+                matrix[idx] = std::move(matrix[last_idx]);
             }
 
             // Удаляем последнюю строку и столбец

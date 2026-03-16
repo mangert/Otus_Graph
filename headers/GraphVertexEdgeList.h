@@ -121,7 +121,6 @@ namespace graph {
                             }
                         }
                     }
-
                     return true;
                 }
             }
@@ -211,7 +210,6 @@ namespace graph {
                     }
                 }
             }
-
             return deg;
         }
 
