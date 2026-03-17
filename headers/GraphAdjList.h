@@ -137,14 +137,12 @@ namespace graph {
             std::vector<std::tuple<Vertex, Vertex, bool>> result;
 
             for (size_t i = 0; i < lists.size(); ++i) {
-                for (const auto& to : lists[i]) {
-                    // Чтобы не дублировать для неориентированных,
-                    // добавляем только если from < to или граф ориентированный
+                for (const auto& to : lists[i]) {                    
                     if constexpr (Directed) {
                         result.emplace_back(index_to_vertex[i], to, true);
                     }
-                    else {
-                        if (index_to_vertex[i] < to) {
+                    else { // Добавляем, если from <= to (включает петли)
+                        if (index_to_vertex[i] < to || index_to_vertex[i] == to) {
                             result.emplace_back(index_to_vertex[i], to, true);
                         }
                     }

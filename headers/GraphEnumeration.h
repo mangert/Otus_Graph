@@ -68,7 +68,14 @@ namespace graph {
         }
 
         bool hasEdge(const Vertex& from, const Vertex& to) const override {
-            return edges.count({ from, to }) > 0;
+            //прямое направление
+            if (edges.count({ from, to }) > 0)
+                return true;
+            
+            // Для неориентированного пробуем обратное
+            if constexpr (!Directed) {
+                return edges.count({ to, from }) > 0;
+            }
         }
 
         std::optional<EdgeInfo> getEdgeInfo(const Vertex& from, const Vertex& to) const override {

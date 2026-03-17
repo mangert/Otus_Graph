@@ -32,34 +32,42 @@ namespace graph {
             auto it_v = headers.find(v);
             if (it_v == headers.end()) return false;
 
-            const auto& [iter, size] = it_v->second;
+            auto& [iter, size] = it_v->second;
 
-            // Удаляем все ребра, связанные с v
-            if (size > 0) {
-                // Собираем все вершины, смежные с v
-                std::vector<Vertex> neighbors;
-                auto it = iter;
-                for (size_t i = 0; i != size; ++i) {
-                    if (it == edges.end()) break;
-                    neighbors.push_back(*it);
-                    ++it;
-                }
+            // 1. Удаляем ВСЕ ребра, где v участвует
+            // Сначала собираем все вершины, с которыми v связано (в любую сторону)
+            std::set<Vertex> all_neighbors;
 
-                // Удаляем ребра в обратную сторону
-                for (const auto& to : neighbors) {
-                    removeEdge(to, v);  // удаляем обратные ребра
-                }
+            // Исходящие ребра (из v)
+            auto it = iter;
+            for (size_t i = 0; i < size; ++i) {
+                if (it == edges.end()) break;
+                all_neighbors.insert(*it);
+                ++it;
+            }
 
-                // Удаляем ребра из v
-                it = iter;
-                for (size_t i = 0; i < size; ++i) {
-                    auto next = std::next(it);
-                    edges.erase(it);
-                    it = next;
+            // Входящие ребра (в v) - нужно пройти по всем спискам
+            for (const auto& [u, data] : headers) {
+                if (u == v) continue;
+                const auto& [u_iter, u_size] = data;
+                auto it_u = u_iter;
+                for (size_t i = 0; i < u_size; ++i) {
+                    if (it_u == edges.end()) break;
+                    if (*it_u == v) {
+                        all_neighbors.insert(u);
+                        break;
+                    }
+                    ++it_u;
                 }
             }
 
-            // Удаляем вершину из оглавления
+            // 2. Удаляем все ребра с этими соседями (в обе стороны)
+            for (const auto& neighbor : all_neighbors) {
+                removeEdge(v, neighbor);    // исходящее (если есть)
+                removeEdge(neighbor, v);    // входящее (если есть)
+            }
+
+            // 3. Удаляем вершину из оглавления
             headers.erase(v);
 
             return true;
@@ -226,7 +234,7 @@ namespace graph {
                         result.emplace_back(v, *it, true);
                     }
                     else {
-                        if (v < *it) {
+                        if (v < *it || v == *it) {
                             result.emplace_back(v, *it, true);
                         }
                     }

@@ -146,7 +146,15 @@ namespace graph {
         }
 
         bool hasEdge(const Vertex& from, const Vertex& to) const override {
-            return edge_to_index.count({ from, to }) > 0;
+            // Пробуем прямое направление
+            if (edge_to_index.count({ from, to }) > 0) return true;
+
+            // Для неориентированного пробуем обратное
+            if constexpr (!Directed) {
+                return edge_to_index.count({ to, from }) > 0;
+            }
+
+            return false;
         }
 
         std::optional<EdgeInfo> getEdgeInfo(const Vertex& from, const Vertex& to) const override {
@@ -174,32 +182,26 @@ namespace graph {
             if (it == vertex_to_index.end()) return {};
 
             size_t v_idx = it->second;
-            std::set<Vertex> neighbors; // используем set для уникальности
+            std::set<Vertex> neighbors;
 
             for (size_t e_idx = 0; e_idx < matrix.size(); ++e_idx) {
                 int val = matrix[e_idx][v_idx];
 
                 if constexpr (Directed) {
-                    if (val == -1) { // v - начало ребра -> ищем конец
+                    // Для ориентированного графа - только исходящие
+                    if (val == -1) { // v - начало ребра
                         for (size_t other = 0; other < vertexCount(); ++other) {
                             if (matrix[e_idx][other] == 1) {
                                 neighbors.insert(index_to_vertex[other]);
                             }
                         }
-                    }
-                    else if (val == 1) { // v - конец ребра -> ищем начало
-                        for (size_t other = 0; other < vertexCount(); ++other) {
-                            if (matrix[e_idx][other] == -1) {
-                                neighbors.insert(index_to_vertex[other]);
-                            }
-                        }
-                    }
+                    }                    
                     else if (val == 2) { // петля
-                        neighbors.insert(v); // добавляем саму себя
+                        neighbors.insert(v);
                     }
                 }
                 else {
-                    // Неориентированный - любое положительное значение значит инцидентность
+                    // Неориентированный - любое положительное значение
                     if (val > 0) {
                         for (size_t other = 0; other < vertexCount(); ++other) {
                             if (other != v_idx && matrix[e_idx][other] > 0) {

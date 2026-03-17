@@ -155,12 +155,12 @@ namespace graph {
 
             for (const auto& node : vertices) {
                 for (const auto& e : node.edges) {
-                    // ƒл€ неориентированных добавл€ем только если from < to
+                    
                     if constexpr (Directed) {
                         result.emplace_back(node.vertex, e.to, e.info);
                     }
-                    else {
-                        if (node.vertex < e.to) {
+                    else {// ƒл€ неориентированных добавл€ем только если from <= to (петли) 
+                        if (node.vertex < e.to || node.vertex == e.to) {
                             result.emplace_back(node.vertex, e.to, e.info);
                         }
                     }

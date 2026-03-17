@@ -150,14 +150,27 @@ namespace graph {
         }
 
         std::vector<std::tuple<Vertex, Vertex, bool>> getEdges() const override {
-            std::vector<std::tuple<Vertex, Vertex, bool>> result;
+            std::vector<std::tuple<Vertex, Vertex, bool>> result;            
+            
+            const size_t size = vectors.size();
+            for (size_t i = 0; i != size; ++i) {
+                for (const auto& cell : vectors[i]) {
+                    
+                    Vertex from = index_to_vertex[i];
+                    Vertex to = cell;
 
-            for (size_t i = 0; i < vectors.size(); ++i) {
-                for (const auto& cell : vectors[i]) {                    
-                    result.emplace_back(index_to_vertex[i], cell, true);                    
+                    // Для неориентированных графов добавляем только один раз
+                    if constexpr (Directed) {
+                        result.emplace_back(from, to, true);
+                    }
+                    else{
+                         // Добавляем только если from < to (чтобы избежать дублирования)                            
+                        if (from == to || from < to) {
+                            result.emplace_back(from, to, true);
+                        }
+                    }                    
                 }
             }
-
             return result;
         }
 

@@ -192,16 +192,29 @@ namespace graph {
         std::vector<std::tuple<Vertex, Vertex, bool>> getEdges() const override {
             std::vector<std::tuple<Vertex, Vertex, bool>> result;
 
-            for (size_t i = 0; i < vectors.size(); ++i) {
+            const size_t size = vectors.size();
+            for (size_t i = 0; i != size; ++i) {
                 for (const auto& cell : vectors[i]) {
                     if (cell.has_value()) {
-                        result.emplace_back(index_to_vertex[i], cell.value(), true);
+                        Vertex from = index_to_vertex[i];
+                        Vertex to = cell.value();
+
+                        // Для неориентированных графов добавляем только один раз
+                        if constexpr (Directed) {
+                            result.emplace_back(from, to, true);
+                        }
+                        else {
+                            // Добавляем только если from =< to (чтобы избежать дублирования)                            
+                            if (from < to || from == to) {
+                                result.emplace_back(from, to, true);
+                            }
+                        }
                     }
                 }
             }
 
             return result;
-        }        
+        }
         
         size_t edgeCount() const override {
             
