@@ -1,0 +1,1278 @@
+﻿
+========== ТЕСТИРОВАНИЕ ВСЕХ ПРЕДСТАВЛЕНИЙ ДВУДОЛЬНОГО ГРАФА ==========
+
+========== Перечисление множеств ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5, 7}
+Правая доля (чётные): {2, 4, 6}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+
+========== Перечень рёбер ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5, 7}
+Правая доля (чётные): {2, 4, 6}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+
+========== Матрица смежности ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5, 7}
+Правая доля (чётные): {2, 4, 6}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+
+========== Матрица инцидентности ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5, 7}
+Правая доля (чётные): {2, 4, 6}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+
+========== Векторы смежности ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5}
+Правая доля (чётные): {2, 4, 6, 7}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+
+========== Массивы смежности ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5}
+Правая доля (чётные): {2, 4, 6, 7}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+
+========== Списки смежности ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5}
+Правая доля (чётные): {2, 4, 6, 7}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+
+========== Структура с оглавлением ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5}
+Правая доля (чётные): {2, 4, 6, 7}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+
+========== Список вершин и список рёбер ==========
+Двудольный граф А(3,4) с 5 рёбрами
+Левая доля (нечётные): {1, 3, 5, 7}
+Правая доля (чётные): {2, 4, 6}
+
+Вершины (7): 1 2 3 4 5 6 7
+
+Рёбра (5):
+  1 -- 2  (левая -> правая)
+  2 -- 3  (правая -> левая)
+  3 -- 4  (левая -> правая)
+  4 -- 5  (правая -> левая)
+  5 -- 6  (левая -> правая)
+
+Степени вершин:
+  deg(1) = 1 +
+  deg(2) = 2 +
+  deg(3) = 2 +
+  deg(4) = 2 +
+  deg(5) = 2 +
+  deg(6) = 1 +
+  deg(7) = 0 +
+
+Проверка двудольности:
+  + Все рёбра между разными долями
+====================================
+
+=== TESTING UNDIRECTED GRAPHS ===
+
+=== Testing Enumeration (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for Enumeration!
+
+=== Testing EdgeList (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for EdgeList!
+
+=== Testing AdjMatrix (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for AdjMatrix!
+
+=== Testing IncMatrix (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for IncMatrix!
+
+=== Testing AdjVectors (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for AdjVectors!
+
+=== Testing AdjArray (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for AdjArray!
+
+=== Testing AdjList (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for AdjList!
+
+=== Testing Structured (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for Structured!
+
+=== Testing VertexEdgeList (Directed=0) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Undirected edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: A C E (expected: A C E )
+Neighbors of C: B (expected: B )
+Neighbors of D: (expected: )
+Neighbors of E: B (expected: B )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for VertexEdgeList!
+
+
+=== TESTING DIRECTED GRAPHS ===
+
+=== Testing Enumeration (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for Enumeration!
+
+=== Testing EdgeList (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for EdgeList!
+
+=== Testing AdjMatrix (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for AdjMatrix!
+
+=== Testing IncMatrix (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for IncMatrix!
+
+=== Testing AdjVectors (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for AdjVectors!
+
+=== Testing AdjArray (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for AdjArray!
+
+=== Testing AdjList (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for AdjList!
+
+=== Testing Structured (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for Structured!
+
+=== Testing VertexEdgeList (Directed=1) ===
+
+-- Initial state --
+Vertices count: 5 (expected 5)
+Vertex A exists: OK
+Vertex B exists: OK
+Vertex C exists: OK
+Vertex D exists: OK
+Vertex E exists: OK
+Non-existent vertex X: OK
+
+Edge checks:
+Directed edges: OK
+Non-existent edges: OK
+Edge count: 3 (expected 3)
+getEdges() returned 3 edges
+
+Degree checks:
+Degree of A: 1 (expected 1)
+Degree of B: 3 (expected 3)
+Degree of C: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+Directed-specific checks:
+A: out=1 (exp 1), in=0 (exp 0)
+B: out=2 (exp 2), in=1 (exp 1)
+C: out=0 (exp 0), in=1 (exp 1)
+D: out=0 (exp 0), in=0 (exp 0)
+E: out=0 (exp 0), in=1 (exp 1)
+
+Neighbor checks:
+Neighbors of A: B (expected: B )
+Neighbors of B: C E (expected: C E )
+Neighbors of C: (expected: )
+Neighbors of D: (expected: )
+Neighbors of E: (expected: )
+
+-- Removing vertex C (middle) --
+Vertex C removed: OK
+Other vertices preserved: OK
+Edges incident to C removed: OK
+Other edges preserved: OK
+New degrees after removing C:
+Degree of A: 1 (expected 1)
+Degree of B: 2 (expected 2)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
+-- Removing edge A-B --
+Edge A-B removed: OK
+Other edges preserved: OK
+Final degrees after removing edge:
+Degree of A: 0 (expected 0)
+Degree of B: 1 (expected 1)
+Degree of D: 0 (expected 0)
+Degree of E: 1 (expected 1)
+
++ All tests passed for VertexEdgeList!
+
+D:\Otus_Algo\Graph\out\build\x64-debug\Graph.exe (process 6160) exited with code 0 (0x0).
+Press any key to close this window . . .
