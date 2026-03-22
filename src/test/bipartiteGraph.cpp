@@ -1,18 +1,19 @@
-﻿#include <iostream>
+﻿#pragma once
+#include <iostream>
 #include <vector>
 
-#include "IGraph.h"
-#include "GraphEnumeration.h"
-#include "GraphAdjMatrix.h"
-#include "GraphIncMatrix.h"
-#include "GraphEdgeList.h"
-#include "GraphAdjVectors.h"
-#include "GraphAdjArray.h"
-#include "GraphAdjList.h"
-#include "GraphStructured.h"
-#include "GraphVertexEdgeList.h"
+#include "graph/IGraph.h"
+#include "graph/GraphEnumeration.h"
+#include "graph/GraphAdjMatrix.h"
+#include "graph/GraphIncMatrix.h"
+#include "graph/GraphEdgeList.h"
+#include "graph/GraphAdjVectors.h"
+#include "graph/GraphAdjArray.h"
+#include "graph/GraphAdjList.h"
+#include "graph/GraphStructured.h"
+#include "graph/GraphVertexEdgeList.h"
 
-#include "graph_factory.h"
+#include "graph/graph_factory.h"
 
 using namespace graph;
 

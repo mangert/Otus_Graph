@@ -12,7 +12,7 @@ endif()
 project ("Graph")
 
 # Add source to this project's executable.
-add_executable (Graph  "src/main.cpp")
+add_executable (Graph  "src/main.cpp" "headers/ algorithms/graph_algorithms.h" "headers/data_structures/Queue.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Graph PROPERTY CXX_STANDARD 20)
