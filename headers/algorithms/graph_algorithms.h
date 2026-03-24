@@ -12,7 +12,7 @@ namespace graph_algorithms {
 
     namespace { // анонимный неймспейс — содержит внутренние имплементации
 
-        //имплементация алгоритма Демукрона
+        //--------------Имплементация алгоритма Демукрона------------------------------------        
         template<typename Graph, graph::Comparable Vertex>
         std::optional<std::vector<std::vector<Vertex>>> demukronImpl(const Graph& graph) {
             size_t v_count = graph.vertexCount();
@@ -91,12 +91,11 @@ namespace graph_algorithms {
             }
 
             return result;
-        }
+        }        
 
-        // ============================================================
-        // ВСПОМОГАТЕЛЬНЫЕ СТРУКТУРЫ И ФУНКЦИИ
-        // ============================================================
-
+        //--------------Имплементация алгоритма Тарьяна------------------------------------        
+        
+        //Вспомогательные структуры и функции
         enum class VertexState {
             none,   // не посещена
             seen,   // в процессе обхода (в стеке рекурсии)
@@ -139,10 +138,7 @@ namespace graph_algorithms {
             return true;
         }
 
-        // ============================================================
-        // ОСНОВНАЯ РЕАЛИЗАЦИЯ АЛГОРИТМА ТАРЬЯНА
-        // ============================================================
-
+        // Основная реализация алгоритма Тарьяна
         template<typename Graph, typename Vertex>
         std::optional<std::vector<Vertex>> tarjanImpl(const Graph& graph) {
             size_t v_count = graph.vertexCount();
@@ -152,14 +148,7 @@ namespace graph_algorithms {
 
             // Получаем вершины и создаем отображение
             std::vector<Vertex> vertices = graph.getVertices();
-
-            // ОТЛАДКА: выводим все вершины
-            std::cout << "Вершины графа: ";
-            for (const auto& v : vertices) {
-                std::cout << v << " ";
-            }
-            std::cout << std::endl;
-
+            
             std::map<Vertex, size_t> vertex_to_index;
             for (size_t i = 0; i < v_count; ++i) {
                 vertex_to_index[vertices[i]] = i;
@@ -184,6 +173,88 @@ namespace graph_algorithms {
             }            
 
             return result;
+        }
+
+        //--------------Имплементация алгоритма поиска моство------------------------------------        
+        // Рекурсивный DFS для поиска мостов
+        template<typename Graph, typename Vertex>
+        void bridgesDfs(
+            size_t v,
+            size_t parent,
+            const std::vector<Vertex>& vertices,
+            const std::map<Vertex, size_t>& vertex_to_index,
+            const Graph& graph,
+            std::vector<int>& index,
+            std::vector<int>& lowlink,
+            std::vector<bool>& visited,
+            std::vector<std::pair<Vertex, Vertex>>& bridges,
+            int& current_index
+        ) {
+            visited[v] = true;
+            index[v] = current_index;
+            lowlink[v] = current_index;
+            ++current_index;
+
+            Vertex current_vertex = vertices[v];
+            std::vector<Vertex> neighbors = graph.getNeighbors(current_vertex);
+
+            for (const Vertex& neighbor : neighbors) {
+                size_t neighbor_idx = vertex_to_index.at(neighbor);
+
+                if (neighbor_idx == parent) {
+                    continue;  // пропускаем обратное ребро к родителю
+                }
+
+                if (!visited[neighbor_idx]) {
+                    // Рекурсивный вызов
+                    bridgesDfs(neighbor_idx, v, vertices, vertex_to_index, graph,
+                        index, lowlink, visited, bridges, current_index);
+
+                    // Обновляем lowlink текущей вершины
+                    lowlink[v] = std::min(lowlink[v], lowlink[neighbor_idx]);
+
+                    // Проверяем, является ли ребро (v, neighbor) мостом
+                    if (lowlink[neighbor_idx] > index[v]) {
+                        bridges.push_back({ current_vertex, neighbor });
+                    }
+                }
+                else {
+                    // Обратное ребро (не к родителю)
+                    lowlink[v] = std::min(lowlink[v], index[neighbor_idx]);
+                }
+            }
+        }
+
+        template<typename Graph, typename Vertex>
+        std::vector<std::pair<Vertex, Vertex>> bridgesImpl(const Graph& graph) {
+            size_t v_count = graph.vertexCount();
+            if (v_count == 0) {
+                return {};
+            }
+
+            // Получаем вершины и создаем отображение
+            std::vector<Vertex> vertices = graph.getVertices();
+            std::map<Vertex, size_t> vertex_to_index;
+            for (size_t i = 0; i < v_count; ++i) {
+                vertex_to_index[vertices[i]] = i;
+            }
+
+            // Структуры для DFS
+            std::vector<int> index(v_count, -1);
+            std::vector<int> lowlink(v_count, -1);
+            std::vector<bool> visited(v_count, false);
+            std::vector<std::pair<Vertex, Vertex>> bridges;
+            int current_index = 0;
+
+            // Запускаем DFS для всех компонент связности
+            for (size_t i = 0; i < v_count; ++i) {
+                if (!visited[i]) {
+                    bridgesDfs(i, -1, vertices, vertex_to_index, graph,
+                        index, lowlink, visited, bridges, current_index);
+                }
+            }
+
+            return bridges;
         }
         
     } // anonymos namespace    
@@ -219,4 +290,21 @@ namespace graph_algorithms {
     std::optional<std::vector<Vertex>> tarjan(const Graph<Vertex, true>& graph) {
         return tarjanImpl<Graph<Vertex, true>, Vertex>(graph);
     }
+
+    //Алгоритм поиска мостов
+    // Специализация для трех шаблонных параметров (с EdgeInfo)
+    template<template<graph::Comparable, typename, bool> class Graph,
+        graph::Comparable Vertex,
+        typename EdgeInfo>
+    std::vector<std::pair<Vertex, Vertex>> findBridges(const Graph<Vertex, EdgeInfo, false>& graph) {
+        return bridgesImpl<Graph<Vertex, EdgeInfo, false>, Vertex>(graph);
+    }
+
+    // Специализация для двух шаблонных параметров (без EdgeInfo)
+    template<template<graph::Comparable, bool> class Graph,
+        graph::Comparable Vertex>
+    std::vector<std::pair<Vertex, Vertex>> findBridges(const Graph<Vertex, false>& graph) {
+        return bridgesImpl<Graph<Vertex, false>, Vertex>(graph);
+    }
+
 } // namespace graph_algorithms
