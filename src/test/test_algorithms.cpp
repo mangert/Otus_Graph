@@ -162,15 +162,19 @@ std::vector<edge_data> edges_k4 = {
     {2, 3, true}
 };
 
-// Граф 10: Граф с мостами
+// Граф 10: Двусвязный граф (нет мостов)
+std::vector<int> vertices_biconnected = { 0, 1, 2, 3 };
+std::vector<edge_data> edges_biconnected = {
+    {0, 1, true}, {1, 2, true}, {2, 3, true}, {3, 0, true},
+    {0, 2, true}
+};
+
+// Граф 11: Граф с мостами (два треугольника, соединенные мостом)
 std::vector<int> vertices_with_bridges = { 0, 1, 2, 3, 4, 5 };
 std::vector<edge_data> edges_with_bridges = {
-    {0, 1, true},
-    {1, 2, true},
-    {0, 3, true},
-    {3, 4, true},
-    {4, 5, true},
-    {2, 5, true}
+    {0, 1, true}, {1, 2, true}, {2, 0, true},  // треугольник 0-1-2
+    {2, 3, true},                               // мост
+    {3, 4, true}, {4, 5, true}, {5, 3, true}    // треугольник 3-4-5
 };
 
 //Собтвенно тесты
@@ -255,10 +259,15 @@ void testBridges() {
     auto result4 = findBridges(graph4);
     printResult(result4, "Полный граф K4");
 
-    // Тест 5: Граф с мостами
-    auto graph5 = graph::make_graph<graph::GraphAdjVectors, false>(vertices_with_bridges, edges_with_bridges);
+    // Тест 5: Двусвязный граф (нет мостов)
+    auto graph5 = graph::make_graph<graph::GraphAdjVectors, false>(vertices_biconnected, edges_biconnected);
     auto result5 = findBridges(graph5);
-    printResult(result5, "Граф с мостами");
+    printResult(result5, "Двусвязный граф (квадрат с диагональю)");
+
+    // Тест 6: Граф с мостами (два треугольника + мост)
+    auto graph6 = graph::make_graph<graph::GraphAdjVectors, false>(vertices_with_bridges, edges_with_bridges);
+    auto result6 = findBridges(graph6);
+    printResult(result6, "Граф с мостами (два треугольника, соединенные мостом)");
 }
 
 void testAllAlgorithms() {
