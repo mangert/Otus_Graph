@@ -1,22 +1,22 @@
-#pragma once
+п»ї#pragma once
 #include "List.h"  
 #include <stdexcept>
 
 template <typename T>
 class Queue : private List<T> {
 public:
-    // ---------- Конструкторы ----------
+    // ---------- РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ ----------
     Queue() = default;
     
-    // Конструктор копирования
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
     Queue(const Queue& other) : List<T>(other) {}
 
-    // Конструктор перемещения
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРµСЂРµРјРµС‰РµРЅРёСЏ
     Queue(Queue&& other) noexcept : List<T>(std::move(other)) {}
 
     ~Queue() = default;
 
-    // ---------- Операторы присваивания ----------
+    // ---------- РћРїРµСЂР°С‚РѕСЂС‹ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ ----------
     Queue& operator=(const Queue& other) {
         List<T>::operator=(other);
         return *this;
@@ -27,9 +27,9 @@ public:
         return *this;
     }
 
-    // ---------- Основные методы очереди ----------
+    // ---------- РћСЃРЅРѕРІРЅС‹Рµ РјРµС‚РѕРґС‹ РѕС‡РµСЂРµРґРё ----------
 
-    // Добавление элемента в конец очереди (enqueue)
+    // Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ РєРѕРЅРµС† РѕС‡РµСЂРµРґРё (enqueue)
     void push(const T& value) {
         List<T>::push_back(value);
     }
@@ -38,7 +38,7 @@ public:
         List<T>::push_back(std::move(value));
     }
 
-    // Удаление элемента из начала очереди (dequeue)
+    // РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· РЅР°С‡Р°Р»Р° РѕС‡РµСЂРµРґРё (dequeue)
     void pop() {
         if (empty()) {
             throw std::runtime_error("Queue is empty");
@@ -46,7 +46,7 @@ public:
         List<T>::del(0);
     }
 
-    // Доступ к первому элементу
+    // Р”РѕСЃС‚СѓРї Рє РїРµСЂРІРѕРјСѓ СЌР»РµРјРµРЅС‚Сѓ
     T& front() {
         if (empty()) {
             throw std::runtime_error("Queue is empty");
@@ -61,7 +61,7 @@ public:
         return (*this)[0];
     }
 
-    // ---------- Вспомогательные методы ----------
+    // ---------- Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РјРµС‚РѕРґС‹ ----------
     bool empty() const {
         return List<T>::is_empty();
     }

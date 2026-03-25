@@ -1,22 +1,22 @@
-#pragma once
+п»ї#pragma once
 #include "List.h"  
 #include <stdexcept>
 
 template <typename T>
 class Stack : private List<T> {
 public:
-    // ---------- Конструкторы ----------
+    // ---------- РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ ----------
     Stack() = default;
     
-    // Конструктор копирования
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
     Stack(const Stack& other) : List<T>(other) {}
 
-    // Конструктор перемещения
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРµСЂРµРјРµС‰РµРЅРёСЏ
     Stack(Stack&& other) noexcept : List<T>(std::move(other)) {}
 
     ~Stack() = default;
 
-    // ---------- Операторы присваивания ----------
+    // ---------- РћРїРµСЂР°С‚РѕСЂС‹ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ ----------
     Stack& operator=(const Stack& other) {
         List<T>::operator=(other);
         return *this;
@@ -27,9 +27,9 @@ public:
         return *this;
     }
 
-    // ---------- Основные методы очереди ----------
+    // ---------- РћСЃРЅРѕРІРЅС‹Рµ РјРµС‚РѕРґС‹ РѕС‡РµСЂРµРґРё ----------
 
-    // Добавление элемента в стек
+    // Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ СЃС‚РµРє
     void push(const T& value) {
         List<T>::push_front(value);
     }
@@ -38,7 +38,7 @@ public:
         List<T>::push_front(std::move(value));
     }
 
-    // Получение элемента из стека
+    // РџРѕР»СѓС‡РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· СЃС‚РµРєР°
     void pop() {
         if (empty()) {
             throw std::runtime_error("Stack is empty");
@@ -46,7 +46,7 @@ public:
         List<T>::del(0);
     }
 
-    // Доступ к первому элементу
+    // Р”РѕСЃС‚СѓРї Рє РїРµСЂРІРѕРјСѓ СЌР»РµРјРµРЅС‚Сѓ
     T& top() {
         if (empty()) {
             throw std::runtime_error("Stack is empty");
@@ -61,7 +61,7 @@ public:
         return (*this)[0];
     }
 
-    // ---------- Вспомогательные методы ----------
+    // ---------- Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РјРµС‚РѕРґС‹ ----------
     bool empty() const {
         return List<T>::is_empty();
     }
