@@ -4,6 +4,9 @@
 #include "test/bipartiteGraph.cpp" 
 #include <optional>
 #include "data_structures/UnionFind.h"
+#include "algorithms/graph_algorithms2.h"
+#include "graph/GraphIncMatrix.h"
+#include "graph/graph_factory.h"
 
 void testAllAlgorithms();
 
@@ -49,6 +52,24 @@ int main() {
 	bool connected3 = uf.isConnected(0, 3);  // true
 	std::cout << connected3 << std::endl;
 	std::cout << uf.size() << std::endl;
+	graph::GraphIncMatrix<int, bool, true> g;
+	
+	using edge_data = std::tuple<int, int, double>;
+	std::vector<int> vertices_dag_complex = { 1, 2, 3, 4, 5, 6 };
+	std::vector<edge_data> edges_dag_complex = {
+		{1, 2, 1.5},
+		{1, 4, 2},
+		{3, 2, 0.5},
+		{2, 6, 3},
+		{4, 6, 6},
+		{6, 5, 2}
+	};
+	std::cout << "***********************" << std::endl;
+	auto graph = graph::make_graph<GraphIncMatrix, false>(vertices_dag_complex, edges_dag_complex);
+	auto path = graph_algorithms::kruskal(graph);
+	for (auto& item : path) {
+		std::cout << item.v1 << " -> " << item.v2 << std::endl;
+	}
 
 	return 0;
 }
