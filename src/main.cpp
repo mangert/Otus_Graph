@@ -128,5 +128,12 @@ int main() {
 	for (auto& item : path) {
 		std::cout << item.v1 << " -> " << item.v2 << std::endl;
 	}
+	std::cout << "Борувка" << std::endl;
+	auto path2 = graph_algorithms::boruvka(graph); 
+	if (path2.has_value()) {		
+		for (const auto& edge : path2.value()) {
+			std::cout << edge.v1 << " -- " << edge.v2 << std::endl;
+		}
+	}
 	return 0;
 }

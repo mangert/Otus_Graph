@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <vector>
 
 
@@ -9,7 +9,7 @@ template<typename T, typename Compare = std::less<T>>
 class PriorityQueue {
     
 public:
-    //конструкторы
+    //РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
     PriorityQueue() = default;
     explicit PriorityQueue(const Compare& cmp) : comp(cmp) {}
     PriorityQueue(const PriorityQueue&) = default;
@@ -19,7 +19,7 @@ public:
     PriorityQueue& operator=(const PriorityQueue&) = default;
     PriorityQueue& operator=(PriorityQueue&&) = default;
 
-    //основные методы
+    //РѕСЃРЅРѕРІРЅС‹Рµ РјРµС‚РѕРґС‹
     void push(const T& value) {
         data.push_back(value);
         heapify_up(data.size() - 1);
@@ -88,6 +88,6 @@ private:
 
 private:
     std::vector<T> data;
-    [[no_unique_address]] Compare comp; //компаратор
+    [[no_unique_address]] Compare comp; //РєРѕРјРїР°СЂР°С‚РѕСЂ
 
 };
