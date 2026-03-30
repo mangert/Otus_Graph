@@ -158,9 +158,20 @@ namespace graph {
         }
 
         std::optional<EdgeInfo> getEdgeInfo(const Vertex& from, const Vertex& to) const override {
+            // Пробуем прямое направление
             auto it = edge_to_index.find({ from, to });
-            if (it == edge_to_index.end()) return std::nullopt;
-            return index_to_edge[it->second].info;
+            if (it != edge_to_index.end()) {
+                return index_to_edge[it->second].info;
+            }
+
+            // Для неориентированного пробуем обратное направление
+            if constexpr (!Directed) {
+                auto it_rev = edge_to_index.find({ to, from });
+                if (it_rev != edge_to_index.end()) {
+                    return index_to_edge[it_rev->second].info;
+                }
+            }
+            return std::nullopt;
         }
 
         std::vector<std::tuple<Vertex, Vertex, EdgeInfo>> getEdges() const override {
