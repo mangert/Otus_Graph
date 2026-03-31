@@ -10,7 +10,7 @@ namespace graph {
     class GraphStructured : public IGraph<Vertex, bool> {
     
     public:
-        //---------- Констукторы ---------------//
+        //---------- Конструкторы ---------------//
         GraphStructured() = default;
         GraphStructured(const GraphStructured&) = default;
         GraphStructured(GraphStructured&&) = default;

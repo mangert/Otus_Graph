@@ -7,6 +7,11 @@
 #include "data_structures/UnionFind.h"
 #include "data_structures/PriorityQueue.h"
 
+// graph_algorithms_mst.h
+// Алгоритмы построения минимального остовного дерева (MST):
+// - Краскала (Kruskal)
+// - Прима (Prim)
+// - Борувки (Boruvka)
 namespace graph_algorithms {	
     
     template<typename Vertex>
@@ -23,7 +28,7 @@ namespace graph_algorithms {
         graph::Comparable Vertex,
         typename EdgeInfo>
         requires graph::Comparable<EdgeInfo>  // EdgeInfo должен быть сравнимым для сортировки
-    std::vector<Edge<Vertex>> kruskal(Graph<Vertex, EdgeInfo, false>& graph) {
+    std::optional <std::vector<Edge<Vertex>>> kruskal(Graph<Vertex, EdgeInfo, false>& graph) {
 
         // 1. Получаем все ребра
         auto edges = graph.getEdges();  // vector<tuple<Vertex, Vertex, EdgeInfo>>
@@ -56,7 +61,8 @@ namespace graph_algorithms {
                 }
             }
         }
-
+        if (mst.size() != vertices.size() - 1)
+            return std::nullopt;
         return mst;
     }
 

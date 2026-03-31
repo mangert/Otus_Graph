@@ -8,6 +8,11 @@
 #include <optional>
 #include <map>
 
+// graph_algorithms_topological.h
+// Алгоритмы топологической сортировки и поиска мостов:
+// - Демукрона (Demukron)
+// - Тарьяна (Tarjan)
+// - Поиска мостов (Bridges)
 namespace graph_algorithms {
 
     namespace { // анонимный неймспейс — содержит внутренние имплементации
@@ -175,7 +180,7 @@ namespace graph_algorithms {
             return result;
         }
 
-        //--------------Имплементация алгоритма поиска моство------------------------------------        
+        //--------------Имплементация алгоритма поиска мостов------------------------------------        
         // Рекурсивный DFS для поиска мостов
         template<typename Graph, typename Vertex>
         void bridgesDfs(

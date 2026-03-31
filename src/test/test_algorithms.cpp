@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "algorithms/graph_algorithms.h"
+#include "algorithms/graph_algorithms_topological.h"
 #include "graph/GraphAdjVectors.h"
 #include "graph/graph_factory.h"
 #include "optional"
