@@ -21,10 +21,10 @@ int main() {
 	
 	std::cout << "\n\n=== TESTING DIRECTED GRAPHS ===\n";
 	run_all_tests<true>();
-
+	*/
 	//Часть 3 - тестирование алгоритмов
-	testAllAlgorithms();*/
-
-	testAllMSTAlgorithms();
+	testAllAlgorithms();
+	
+	//testAllMSTAlgorithms();
 	return 0;
 }

@@ -115,19 +115,18 @@ namespace graph_algorithms {
             const std::map<Vertex, size_t>& vertex_to_index,
             const Graph& graph,
             std::vector<VertexState>& state,
-            Stack<Vertex>& result_stack) {
+            std::vector<Vertex>& result) {
             state[v] = VertexState::seen;
 
-            Vertex current_vertex = vertices[v];
-            std::vector<Vertex> neighbors = graph.getNeighbors(current_vertex);
+            Vertex current_vertex = vertices[v];            
 
-            for (const Vertex& neighbor : neighbors) {
+            for (const Vertex& neighbor : graph.getNeighbors(current_vertex)) {
                 size_t neighbor_idx = vertex_to_index.at(neighbor);
 
                 if (state[neighbor_idx] == VertexState::none) {
                     // Не посещена - рекурсивный вызов
                     if (!tarjanDfs(neighbor_idx, vertices, vertex_to_index,
-                        graph, state, result_stack)) {
+                        graph, state, result)) {
                         return false;  // нашли цикл
                     }
                 }
@@ -139,7 +138,7 @@ namespace graph_algorithms {
             }
 
             state[v] = VertexState::cplt;
-            result_stack.push(current_vertex);
+            result.insert(result.begin(),(current_vertex));
             return true;
         }
 
@@ -160,23 +159,15 @@ namespace graph_algorithms {
             }
 
             std::vector<VertexState> state(v_count, VertexState::none);
-            Stack<Vertex> result_stack;
+            std::vector<Vertex> result;
 
             for (size_t i = 0; i != v_count; ++i) {
                 if (state[i] == VertexState::none) {                    
-                    if (!tarjanDfs(i, vertices, vertex_to_index, graph, state, result_stack)) {
+                    if (!tarjanDfs(i, vertices, vertex_to_index, graph, state, result)) {
                         return std::nullopt;
                     }
                 }
             }
-
-            std::vector<Vertex> result;
-            result.reserve(v_count);
-            while (!result_stack.empty()) {
-                result.push_back(result_stack.top());
-                result_stack.pop();
-            }            
-
             return result;
         }
 
