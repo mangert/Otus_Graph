@@ -47,3 +47,6 @@ DAG с несколькими корнями (1-8): [7, 8, 3, 1, 4, 2, 6, 5]
   ЗАВЕРШЕНИЕ ТЕСТИРОВАНИЯ
 ============================================================
 Все тесты выполнены!
+
+D:\Otus_Algo\Graph\out\build\x64-debug\Graph.exe (process 9056) exited with code 0 (0x0).
+Press any key to close this window . . .

@@ -107,38 +107,74 @@ namespace graph_algorithms {
             cplt    // полностью обработана
         };
 
-        // Рекурсивный DFS для алгоритма Тарьяна
+        // Структура для имитации рекурсивного вызова
+        struct TarjanFrame {
+            size_t vertex_idx;
+            size_t neighbor_pos;      // текущая позиция в списке соседей
+            bool entered;             // был ли уже вход в вершину
+
+            TarjanFrame() = default;
+            TarjanFrame(size_t idx)
+                : vertex_idx(idx), neighbor_pos(0), entered(false) {
+            }
+        };
+
+        // Итеративный DFS для алгоритма Тарьяна
         template<typename Graph, typename Vertex>
-        bool tarjanDfs(
-            size_t v,
+        bool tarjanDfsIterative(
+            size_t start_v,
             const std::vector<Vertex>& vertices,
             const std::map<Vertex, size_t>& vertex_to_index,
             const Graph& graph,
             std::vector<VertexState>& state,
-            std::vector<Vertex>& result) {
-            state[v] = VertexState::seen;
+            Stack<Vertex>& result_stack
+        ) {
+            Stack<TarjanFrame> dfs_stack;
+            dfs_stack.push(TarjanFrame(start_v));
 
-            Vertex current_vertex = vertices[v];            
+            while (!dfs_stack.empty()) {
+                TarjanFrame& frame = dfs_stack.top();
+                size_t v = frame.vertex_idx;
 
-            for (const Vertex& neighbor : graph.getNeighbors(current_vertex)) {
-                size_t neighbor_idx = vertex_to_index.at(neighbor);
+                // Первый вход в вершину
+                if (!frame.entered) {
+                    frame.entered = true;
+                    state[v] = VertexState::seen;
+                }
 
-                if (state[neighbor_idx] == VertexState::none) {
-                    // Не посещена - рекурсивный вызов
-                    if (!tarjanDfs(neighbor_idx, vertices, vertex_to_index,
-                        graph, state, result)) {
-                        return false;  // нашли цикл
+                // Получаем соседей
+                const std::vector<Vertex>& neighbors = graph.getNeighbors(vertices[v]);
+
+                // Ищем следующего необработанного соседа
+                bool found_next = false;
+                while (frame.neighbor_pos < neighbors.size()) {
+                    const Vertex& neighbor = neighbors[frame.neighbor_pos];
+                    size_t neighbor_idx = vertex_to_index.at(neighbor);
+                    ++frame.neighbor_pos;
+
+                    if (state[neighbor_idx] == VertexState::none) {
+                        // Не посещена — идем в нее
+                        dfs_stack.push(TarjanFrame(neighbor_idx));
+                        found_next = true;
+                        break;
                     }
+                    else if (state[neighbor_idx] == VertexState::seen) {
+                        // Нашли обратное ребро — значит, есть цикл
+                        return false;
+                    }
+                    // если state == cplt — пропускаем
                 }
-                else if (state[neighbor_idx] == VertexState::seen) {
-                    // Нашли обратное ребро — значит, есть цикл
-                    return false;
+
+                if (found_next) {
+                    continue;  // переходим к обработке нового фрейма
                 }
-                // если state == cplt — пропускаем
+
+                // Все соседи обработаны — выходим из вершины
+                state[v] = VertexState::cplt;
+                result_stack.push(vertices[v]);
+                dfs_stack.pop();
             }
 
-            state[v] = VertexState::cplt;
-            result.insert(result.begin(),(current_vertex));
             return true;
         }
 
@@ -152,33 +188,53 @@ namespace graph_algorithms {
 
             // Получаем вершины и создаем отображение
             std::vector<Vertex> vertices = graph.getVertices();
-            
+
             std::map<Vertex, size_t> vertex_to_index;
             for (size_t i = 0; i < v_count; ++i) {
                 vertex_to_index[vertices[i]] = i;
             }
 
             std::vector<VertexState> state(v_count, VertexState::none);
-            std::vector<Vertex> result;
+            Stack<Vertex> result_stack;
 
-            for (size_t i = 0; i != v_count; ++i) {
-                if (state[i] == VertexState::none) {                    
-                    if (!tarjanDfs(i, vertices, vertex_to_index, graph, state, result)) {
+            for (size_t i = 0; i < v_count; ++i) {
+                if (state[i] == VertexState::none) {
+                    if (!tarjanDfsIterative(i, vertices, vertex_to_index, graph, state, result_stack)) {
                         return std::nullopt;
                     }
                 }
             }
+
+            // Извлекаем результат из стека
+            std::vector<Vertex> result;
+            result.reserve(v_count);
+            while (!result_stack.empty()) {
+                result.push_back(result_stack.top());
+                result_stack.pop();
+            }
+
             return result;
         }
 
         //--------------Имплементация алгоритма поиска мостов------------------------------------        
-        // Рекурсивный DFS для поиска мостов
+        // Структура для имитации рекурсивного вызова при поиске мостов
+        struct BridgesFrame {
+            int vertex_idx;         
+            size_t neighbor_pos;    
+            bool entered;
+            int parent;             
+
+            BridgesFrame() = default;
+            BridgesFrame(int idx, int p)
+                : vertex_idx(idx), neighbor_pos(0), entered(false), parent(p) {
+            }
+        };
+
         template<typename Graph, typename Vertex>
-        void bridgesDfs(
-            size_t v,
-            size_t parent,
+        void bridgesDfsIterative(
+            int start_v,
             const std::vector<Vertex>& vertices,
-            const std::map<Vertex, size_t>& vertex_to_index,
+            const std::map<Vertex, int>& vertex_to_index,
             const Graph& graph,
             std::vector<int>& index,
             std::vector<int>& lowlink,
@@ -186,37 +242,57 @@ namespace graph_algorithms {
             std::vector<std::pair<Vertex, Vertex>>& bridges,
             int& current_index
         ) {
-            visited[v] = true;
-            index[v] = current_index;
-            lowlink[v] = current_index;
-            ++current_index;
+            Stack<BridgesFrame> dfs_stack;
+            dfs_stack.push(BridgesFrame(start_v, -1));
 
-            Vertex current_vertex = vertices[v];
-            std::vector<Vertex> neighbors = graph.getNeighbors(current_vertex);
+            while (!dfs_stack.empty()) {
+                BridgesFrame& frame = dfs_stack.top();
+                int v = frame.vertex_idx;
 
-            for (const Vertex& neighbor : neighbors) {
-                size_t neighbor_idx = vertex_to_index.at(neighbor);
-
-                if (neighbor_idx == parent) {
-                    continue;  // пропускаем обратное ребро к родителю
+                if (!frame.entered) {
+                    frame.entered = true;
+                    visited[v] = true;
+                    index[v] = current_index;
+                    lowlink[v] = current_index;
+                    ++current_index;
                 }
 
-                if (!visited[neighbor_idx]) {
-                    // Рекурсивный вызов
-                    bridgesDfs(neighbor_idx, v, vertices, vertex_to_index, graph,
-                        index, lowlink, visited, bridges, current_index);
+                const std::vector<Vertex>& neighbors = graph.getNeighbors(vertices[v]);
 
-                    // Обновляем lowlink текущей вершины
-                    lowlink[v] = std::min(lowlink[v], lowlink[neighbor_idx]);
+                bool found_next = false;
+                while (frame.neighbor_pos < neighbors.size()) {
+                    const Vertex& neighbor = neighbors[frame.neighbor_pos];
+                    int neighbor_idx = vertex_to_index.at(neighbor);
+                    ++frame.neighbor_pos;
 
-                    // Проверяем, является ли ребро (v, neighbor) мостом
-                    if (lowlink[neighbor_idx] > index[v]) {
-                        bridges.push_back({ current_vertex, neighbor });
+                    if (neighbor_idx == frame.parent) {
+                        continue;
+                    }
+
+                    if (!visited[neighbor_idx]) {
+                        dfs_stack.push(BridgesFrame(neighbor_idx, v));
+                        found_next = true;
+                        break;
+                    }
+                    else {
+                        lowlink[v] = std::min(lowlink[v], index[neighbor_idx]);
                     }
                 }
-                else {
-                    // Обратное ребро (не к родителю)
-                    lowlink[v] = std::min(lowlink[v], index[neighbor_idx]);
+
+                if (found_next) {
+                    continue;
+                }
+
+                dfs_stack.pop();
+
+                if (!dfs_stack.empty()) {
+                    BridgesFrame& parent_frame = dfs_stack.top();
+                    int parent_v = parent_frame.vertex_idx;
+                    lowlink[parent_v] = std::min(lowlink[parent_v], lowlink[v]);
+
+                    if (lowlink[v] > index[parent_v]) {
+                        bridges.push_back({ vertices[parent_v], vertices[v] });
+                    }
                 }
             }
         }
@@ -228,31 +304,27 @@ namespace graph_algorithms {
                 return {};
             }
 
-            // Получаем вершины и создаем отображение
             std::vector<Vertex> vertices = graph.getVertices();
-            std::map<Vertex, size_t> vertex_to_index;
-            for (size_t i = 0; i < v_count; ++i) {
-                vertex_to_index[vertices[i]] = i;
-            }
-
-            // Структуры для DFS
+            std::map<Vertex, int> vertex_to_index;
+            for (size_t i = 0; i != v_count; ++i) {
+                vertex_to_index[vertices[i]] = static_cast<int>(i);
+            }            
+            
             std::vector<int> index(v_count, -1);
             std::vector<int> lowlink(v_count, -1);
             std::vector<bool> visited(v_count, false);
             std::vector<std::pair<Vertex, Vertex>> bridges;
             int current_index = 0;
 
-            // Запускаем DFS для всех компонент связности
-            for (size_t i = 0; i < v_count; ++i) {
+            for (size_t i = 0; i != v_count; ++i) {
                 if (!visited[i]) {
-                    bridgesDfs(i, -1, vertices, vertex_to_index, graph,
+                    bridgesDfsIterative(static_cast<int>(i), vertices, vertex_to_index, graph,
                         index, lowlink, visited, bridges, current_index);
                 }
             }
 
             return bridges;
         }
-        
     } // anonymos namespace    
 
     //Алгоритм Демукрона (ярусная топологическая сортировка)
