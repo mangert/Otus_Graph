@@ -1,37 +1,30 @@
 ﻿#pragma once
 #include <iostream>
 #include <vector>
-#include <queue>
 #include "graph/IGraph.h"
 #include <optional>
-#include "data_structures/UnionFind.h"
+#include <concepts>
 #include "data_structures/PriorityQueue.h"
+
 
 // graph_algorithms_.h
 // Алгоритмы поиска кратчайшего пути:
-// - Дейкстры (Deikstra)
+// - Дейкстры (Dijkstra)
 
 namespace graph_algorithms {
-
-    template<typename Vertex>
-    //структура для представления ребра
-    struct Edge {
-        Vertex v1;
-        Vertex v2;
-        Edge() = default;
-        Edge(const Vertex& u, const Vertex& v) : v1(u), v2(v) {}
-    };
-
-    std::optional<size_t> getMin(std::vector<size_t>& labels, std::vector<bool>& visited)
+    
+    std::optional<size_t> getMin(std::vector<double>& labels, std::vector<bool>& visited) //тип поправить
     {
         std::optional<size_t> min_idx = std::nullopt;
         size_t size = labels.size();
         for (size_t i = 0; i != labels.size(); ++i) {
             if (visited[i] == true) continue;
-            if (min_idx.has_value())
-                if (labels[i] < labels[min_idx.value()]){
+            if (min_idx.has_value()) {
+                if (labels[i] < labels[min_idx.value()])
                     min_idx = i;
-                }            
+                
+            }              
+            else min_idx = i;
         }
         return min_idx;
     }
@@ -39,45 +32,124 @@ namespace graph_algorithms {
     //Алгоритм Дейкстры
     template<template<graph::Comparable, typename, bool> class Graph,
         graph::Comparable Vertex,
-        typename EdgeInfo>
-        requires std::is_convertible_v<EdgeInfo, int>  // тут подумать - может, преобразование сделать?
-    std::optional<std::vector<Edge<Vertex>>> deikstra(Graph<Vertex, EdgeInfo, false>& graph, Vertex start) {        
+        typename EdgeInfo,
+        bool Directed,  // Добавляем параметр направленности
+        typename Distance = double>
+        requires std::is_arithmetic_v<Distance>&&
+    std::is_convertible_v<EdgeInfo, Distance>
+        std::optional<std::vector<Edge<Vertex>>> dijkstra(
+            Graph<Vertex, EdgeInfo, Directed>& graph,  // Используем Directed
+            Vertex start,
+            Distance infinity = std::numeric_limits<Distance>::max()) {
+        
+        // 1. Проверка на пустой граф
         size_t v_count = graph.vertexCount();
         if (v_count == 0) {
-            return {};
+            return std::nullopt;
         }
-        std::vector<Edge> result;
-        result.reserve(v_count - 1);
+
+        // 2. Получаем вершины и их индексы
         std::vector<Vertex> vertices = graph.getVertices();
         std::map<Vertex, size_t> vertex_to_index;
-        for (size_t i = 0; i != v_count; ++i) {
+        for (size_t i = 0; i < v_count; ++i) {
             vertex_to_index[vertices[i]] = i;
-        }        
-        size_t start_idx = vertex_to_index.at(start);
-        std::vector<EdgeInfo> labels(v_count, std::max<EdgeInfo>-1);
-        labels[start_idx] = 0;
-        std::vector<bool> visited(v_count, false);
-        
-        while (true) {            
-            std::optional <size_t> current_idx = getMin(labels, visited);
-            if (!current_idx.has_value())
-                break;
-            std::vector<Vertex> neighbors = graph.getNeighbors(current);
-            Vertex current = vertices[current_idx.value()];
-            EdgeInfo weight = labels[current_idx.value()];
-            for (auto neighbor : neighbors) {                
-                EdgeInfo fullweight = weight + graph.getEdgeInfo(current, neighbor);
-                if (fullweight < labels[vertex_to_index[neighbor]])
-                    labels[vertex_to_index[neighbor]] = fullweight;
-            }
-            size_t min_idx = 0;
-            for (size_t i = 1; i != neighbors.size(); ++i) {
-                if (neighbors[i] < neighbors[min_idx])
-                    min_idx = i;
-            }
-            result.emplace_back(Edge(current, neighbors[min_idx]);
         }
+
+        // 3. Проверяем наличие стартовой вершины
+        if (vertex_to_index.find(start) == vertex_to_index.end()) {
+            return std::nullopt;
+        }
+
+        size_t start_idx = vertex_to_index[start];
+
+        // 4. Инициализация
+        std::vector<Distance> distances(v_count, infinity);
+        std::vector<bool> visited(v_count, false);
+        std::vector<std::optional<Vertex>> parents(v_count, std::nullopt);
+
+        // Приоритетная очередь: храним пары (расстояние, индекс_вершины)        
+        struct QueueItem {
+            Distance distance;
+            size_t vertex_index;            
+        };
+        
+        auto min_heap_cmp = [](const QueueItem& a, const QueueItem& b) {
+            return a.distance > b.distance;
+            };        
+        PriorityQueue<QueueItem, decltype(min_heap_cmp)> pq(min_heap_cmp);        
+
+        distances[start_idx] = 0;
+        pq.push({ 0, start_idx });
+
+        // 5. Основной цикл Дейкстры       
+
+        while (!pq.empty()) {
+            QueueItem current = pq.top();
+            pq.pop();
+
+            size_t current_idx = current.vertex_index;
+
+            // Пропускаем устаревшие записи
+            if (visited[current_idx] || current.distance > distances[current_idx]) {
+                continue;
+            }
+
+            visited[current_idx] = true;
+            Vertex current_vertex = vertices[current_idx];
+
+            std::vector<Vertex> neighbors = graph.getNeighbors(current_vertex);
+
+            for (const auto& neighbor : neighbors) {
+                // Пропускаем петли
+                if (current_vertex == neighbor) {
+                    continue;
+                }
+
+                auto edge_info_opt = graph.getEdgeInfo(current_vertex, neighbor);
+                if (!edge_info_opt.has_value()) {
+                    continue;
+                }
+
+                Distance edge_weight = static_cast<Distance>(edge_info_opt.value());
+
+                // Проверка на отрицательный вес
+                if (edge_weight < 0) {
+                    return std::nullopt; // Алгоритм Дейкстры не работает с отрицательными весами
+                }
+
+                size_t neighbor_idx = vertex_to_index[neighbor];
+
+                // Релаксация ребра
+                if (!visited[neighbor_idx] &&
+                    distances[current_idx] != infinity &&
+                    distances[current_idx] + edge_weight < distances[neighbor_idx]) {
+
+                    distances[neighbor_idx] = distances[current_idx] + edge_weight;
+                    parents[neighbor_idx] = current_vertex;
+                    pq.push({ distances[neighbor_idx], neighbor_idx });
+                }
+            }
+        }
+        
+        // 7. Проверка, что все вершины достижимы
+        for (size_t i = 0; i < v_count; ++i) {
+            if (distances[i] == infinity) {
+                return std::nullopt; // Есть недостижимые вершины
+            }
+        }
+
+        // 8. Восстановление рёбер дерева кратчайших путей
+        std::vector<Edge<Vertex>> result;
+        result.reserve(v_count - 1);
+
+        for (size_t i = 0; i < v_count; ++i) {
+            if (parents[i].has_value()) {
+                result.emplace_back(parents[i].value(), vertices[i]);
+            }
+        }
+
         return result;
+        
     }
 
 
