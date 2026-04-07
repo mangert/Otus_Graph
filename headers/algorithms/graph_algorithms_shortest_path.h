@@ -1,46 +1,56 @@
 ﻿#pragma once
 #include <iostream>
 #include <vector>
+#include <map>
 #include "graph/IGraph.h"
 #include <optional>
 #include <concepts>
 #include "data_structures/PriorityQueue.h"
+#include "algorithms/graph_algorithms_common.h"
 
 
 // graph_algorithms_.h
 // Алгоритмы поиска кратчайшего пути:
 // - Дейкстры (Dijkstra)
-
 namespace graph_algorithms {
     
-    std::optional<size_t> getMin(std::vector<double>& labels, std::vector<bool>& visited) //тип поправить
-    {
-        std::optional<size_t> min_idx = std::nullopt;
-        size_t size = labels.size();
-        for (size_t i = 0; i != labels.size(); ++i) {
-            if (visited[i] == true) continue;
-            if (min_idx.has_value()) {
-                if (labels[i] < labels[min_idx.value()])
-                    min_idx = i;
-                
-            }              
-            else min_idx = i;
-        }
-        return min_idx;
-    }
+    namespace { // анонимный неймспейс — содержит служебные функции       
+        
+        //служебная функция для поиска минимума меток (алгоритм Дейкстры)
+        template<typename Distance = double>
+            requires std::is_arithmetic_v<Distance>
+        std::optional<size_t> getMin(std::vector<Distance>& labels, std::vector<bool>& visited) {
+            std::optional<size_t> min_idx = std::nullopt;
+            size_t size = labels.size();
+            for (size_t i = 0; i != labels.size(); ++i) {
+                if (visited[i] == true) continue;
+                if (min_idx.has_value()) {
+                    if (labels[i] < labels[min_idx.value()])
+                        min_idx = i;
 
-    //Алгоритм Дейкстры
+                }
+                else min_idx = i;
+            }
+            return min_idx;
+        }
+    } // anonymos namespace
+
+    //Алгоритм Дейкстры для поиска кратчайших путей во взвешенном графе
+    // Алогорит возвращает набор ребер дерева кратчайших путеи или 
+    // std::nullopt - в следующих случаях: граф пуст (нет вершин), стартовая вершина не принадлежит графу, 
+    // граф содержит рёбра с отрицательным весом (алгоритм Дейкстры не работает),
+    // граф несвязный (не все вершины достижимы из стартовой)
     template<template<graph::Comparable, typename, bool> class Graph,
         graph::Comparable Vertex,
-        typename EdgeInfo,
-        bool Directed,  // Добавляем параметр направленности
-        typename Distance = double>
+        typename EdgeInfo, //данные о ребре - должны уметь конвертироваться в Distance
+        bool Directed,
+        typename Distance = double> //тип для расстояний, должен быть арифметическим
         requires std::is_arithmetic_v<Distance>&&
     std::is_convertible_v<EdgeInfo, Distance>
         std::optional<std::vector<Edge<Vertex>>> dijkstra(
-            Graph<Vertex, EdgeInfo, Directed>& graph,  // Используем Directed
+            Graph<Vertex, EdgeInfo, Directed>& graph,
             Vertex start,
-            Distance infinity = std::numeric_limits<Distance>::max()) {
+            Distance infinity = std::numeric_limits<Distance>::max()) { //значение "бесконечности"     
         
         // 1. Проверка на пустой граф
         size_t v_count = graph.vertexCount();
@@ -48,7 +58,7 @@ namespace graph_algorithms {
             return std::nullopt;
         }
 
-        // 2. Получаем вершины и их индексы
+        // 2. Получаем вершины и отображение на индекс
         std::vector<Vertex> vertices = graph.getVertices();
         std::map<Vertex, size_t> vertex_to_index;
         for (size_t i = 0; i < v_count; ++i) {
@@ -74,7 +84,7 @@ namespace graph_algorithms {
         };
         
         auto min_heap_cmp = [](const QueueItem& a, const QueueItem& b) {
-            return a.distance > b.distance;
+            return a.distance < b.distance;
             };        
         PriorityQueue<QueueItem, decltype(min_heap_cmp)> pq(min_heap_cmp);        
 
@@ -86,7 +96,6 @@ namespace graph_algorithms {
         while (!pq.empty()) {
             QueueItem current = pq.top();
             pq.pop();
-
             size_t current_idx = current.vertex_index;
 
             // Пропускаем устаревшие записи
@@ -99,7 +108,7 @@ namespace graph_algorithms {
 
             std::vector<Vertex> neighbors = graph.getNeighbors(current_vertex);
 
-            for (const auto& neighbor : neighbors) {
+            for (const auto& neighbor : neighbors) {         
                 // Пропускаем петли
                 if (current_vertex == neighbor) {
                     continue;
@@ -136,7 +145,7 @@ namespace graph_algorithms {
             if (distances[i] == infinity) {
                 return std::nullopt; // Есть недостижимые вершины
             }
-        }
+        }        
 
         // 8. Восстановление рёбер дерева кратчайших путей
         std::vector<Edge<Vertex>> result;
@@ -148,8 +157,7 @@ namespace graph_algorithms {
             }
         }
 
-        return result;
-        
+        return result;        
     }
 
 

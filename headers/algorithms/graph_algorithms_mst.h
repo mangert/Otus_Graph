@@ -2,8 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include "graph/IGraph.h"
 #include <optional>
+#include "graph/IGraph.h"
+#include "algorithms/graph_algorithms_common.h"
 #include "data_structures/UnionFind.h"
 #include "data_structures/PriorityQueue.h"
 
@@ -12,17 +13,8 @@
 // - Краскала (Kruskal)
 // - Прима (Prim)
 // - Борувки (Boruvka)
-namespace graph_algorithms {	
+namespace graph_algorithms {	    
     
-    template<typename Vertex>
-    //структура для представления ребра
-    struct Edge {
-        Vertex v1;
-        Vertex v2;
-        Edge() = default;
-        Edge(const Vertex& u, const Vertex& v) : v1(u), v2(v) {}
-    };
-
     //Алгоритм Краскала
     template<template<graph::Comparable, typename, bool> class Graph,
         graph::Comparable Vertex,
