@@ -9,9 +9,10 @@
 #include "algorithms/graph_algorithms_common.h"
 
 
-// graph_algorithms_.h
+// graph_algorithms_shortest_paht.h
 // Алгоритмы поиска кратчайшего пути:
 // - Дейкстры (Dijkstra)
+// - Беллмана-Форда (Bellman Ford)
 namespace graph_algorithms {
     
     namespace { // анонимный неймспейс — содержит служебные функции       
