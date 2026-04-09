@@ -17,7 +17,7 @@
 
 ### 1. Алгоритм Дейкстры (Dijkstra)
 
-**Функция:** [`dijkstra`](../headers/algorithms/graph_algorithms_shortest_path.h#L-dijkstra)
+**Функция:** [`dijkstra`](../headers/algorithms/graph_algorithms_shortest_path.h#L39-dijkstra)
 
 Алгоритм Дейкстры находит кратчайшие пути от стартовой вершины до всех остальных вершин во взвешенном графе с **неотрицательными весами** ребер.
 
@@ -40,7 +40,7 @@
 
 ### 2. Алгоритм Беллмана-Форда (Bellman-Ford)
 
-**Функция:** [`bellmanFord`](../headers/algorithms/graph_algorithms_shortest_path.h#L-bellmanFord)
+**Функция:** [`bellmanFord`](../headers/algorithms/graph_algorithms_shortest_path.h#L160-bellmanFord)
 
 Алгоритм Беллмана-Форда находит кратчайшие пути от стартовой вершины до всех остальных вершин во взвешенном графе. В отличие от Дейкстры, **поддерживает отрицательные веса** ребер, но не работает при наличии отрицательных циклов.
 
